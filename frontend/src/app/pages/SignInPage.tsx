@@ -1,9 +1,10 @@
 import { useEffect } from "react";
 
 export default function SignInPage() {
-  // Redirect to Clerk's hosted Account Portal
+  // Redirect to Clerk's hosted Account Portal with return_back_url
   useEffect(() => {
-    window.location.href = "https://accounts.auraclothings.qzz.io/sign-in";
+    // Add redirect_url param to tell Clerk where to send user after sign-in
+    window.location.href = "https://accounts.auraclothings.qzz.io/sign-in?redirect_url=https://auraclothings.qzz.io/";
   }, []);
 
   return (
