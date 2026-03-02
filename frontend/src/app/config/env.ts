@@ -10,7 +10,13 @@ export const config = {
 
   // API
   api: {
-    url: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
+    // Production: Use environment variable (set in Render)
+    // Local dev: Defaults to localhost:5000
+    url: import.meta.env.VITE_API_URL || (
+      typeof window !== 'undefined' && window.location.hostname === 'localhost'
+        ? 'http://localhost:5000/api'
+        : 'https://auraclothings.qzz.io/api' // Production fallback
+    ),
     timeout: Number(import.meta.env.VITE_API_TIMEOUT) || 30000,
   },
 
