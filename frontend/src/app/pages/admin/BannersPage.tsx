@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { Pencil, X } from 'lucide-react';
-import { Banner, db } from '../../services/database';
+import { Banner } from '../../services/database';
 import { useApp } from '../../context/AppContext';
 
 export default function BannersPage() {
-  const { banners, refreshBanners } = useApp();
+  const { banners, updateBanner } = useApp();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingBanner, setEditingBanner] = useState<Banner | null>(null);
   const [formData, setFormData] = useState<Partial<Banner>>({
@@ -22,9 +22,7 @@ export default function BannersPage() {
     e.preventDefault();
     
     if (editingBanner) {
-      await db.update('banners', editingBanner._id, formData);
-      // Refresh banners after update
-      refreshBanners();
+      await updateBanner(editingBanner._id, formData);
     }
     
     closeModal();

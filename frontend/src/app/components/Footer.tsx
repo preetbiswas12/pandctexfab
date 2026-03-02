@@ -53,7 +53,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 mb-16">
           {/* About */}
           <div>
-            <h3 className="text-lg font-bold tracking-wide mb-6">P&C Texfab</h3>
+            <h3 className="text-lg font-bold tracking-wide mb-6">AuraClothings</h3>
             <p className="text-gray-400 text-sm md:text-base leading-relaxed mb-6">
               Premium quality fabrics for your most creative projects. From dyeable silks to embroidered collections.
             </p>
@@ -130,7 +130,7 @@ export function Footer() {
       <div className="border-t border-white/10 bg-black/50">
         <div className="w-full px-4 md:px-8 lg:px-[60px] py-6 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-gray-400 text-sm md:text-base">
-            © 2024 P&C Texfab. All rights reserved.
+            © 2024 AuraClothings. All rights reserved.
           </p>
           <div className="flex gap-6">
             <a href="#security" className="text-gray-400 text-sm md:text-base hover:text-white transition-colors">

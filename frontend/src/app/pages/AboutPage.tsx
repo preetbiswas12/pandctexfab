@@ -5,7 +5,7 @@ export default function AboutPage() {
       <div className="bg-gradient-to-r from-magenta-50 to-golden-50 px-4 md:px-8 lg:px-[60px] py-12 md:py-20">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-4xl md:text-5xl font-bold mb-4" style={{ fontFamily: "'Century Gothic', 'CenturyGothic', 'Apple Gothic', sans-serif" }}>
-            About P&C Texfab
+            About AuraClothings
           </h1>
           <p className="text-lg text-gray-600">
             Discover our story and commitment to quality fabrics.
@@ -19,7 +19,7 @@ export default function AboutPage() {
         <section>
           <h2 className="text-3xl font-bold mb-6">Our Story</h2>
           <p className="text-lg text-gray-700 leading-relaxed mb-4">
-            P&C Texfab was founded with a passion for bringing premium quality fabrics to creative minds around the world. We believe that the right fabric can transform any vision into reality.
+            AuraClothings was founded with a passion for bringing premium quality fabrics to creative minds around the world. We believe that the right fabric can transform any vision into reality.
           </p>
           <p className="text-lg text-gray-700 leading-relaxed">
             What started as a small initiative has grown into a trusted platform where designers, crafters, and fashion enthusiasts find inspiration and quality materials for their projects.

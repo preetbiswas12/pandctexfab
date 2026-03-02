@@ -26,11 +26,11 @@ interface AppContextType {
   coupons: Coupon[];
   banners: Banner[];
   categories: Category[];
-  refreshProducts: () => void;
-  refreshOrders: () => void;
-  refreshCoupons: () => void;
-  refreshBanners: () => void;
-  refreshCategories: () => void;
+  refreshProducts: () => Promise<void>;
+  refreshOrders: () => Promise<void>;
+  refreshCoupons: () => Promise<void>;
+  refreshBanners: () => Promise<void>;
+  refreshCategories: () => Promise<void>;
   
   // Order Management
   createOrder: (orderData: Omit<Order, '_id' | 'orderNumber' | 'createdAt' | 'updatedAt'>) => Promise<Order>;
@@ -51,6 +51,11 @@ interface AppContextType {
   createBanner: (bannerData: Omit<Banner, '_id' | 'createdAt' | 'updatedAt'>) => Promise<Banner>;
   updateBanner: (bannerId: string, bannerData: Partial<Banner>) => Promise<void>;
   deleteBanner: (bannerId: string) => Promise<void>;
+  
+  // Category Management
+  createCategory: (categoryData: Omit<Category, '_id' | 'createdAt' | 'updatedAt'>) => Promise<Category>;
+  updateCategory: (categoryId: string, categoryData: Partial<Category>) => Promise<void>;
+  deleteCategory: (categoryId: string) => Promise<void>;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -133,30 +138,50 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setCartItems([]);
   };
 
-  // Refresh functions (for manual updates if needed)
+  // Refresh functions (reload data from database)
   const refreshProducts = async () => {
-    const data = (await db.getAll<DBProduct>('products')).map(p => ({ ...p, id: p._id }));
-    setProducts(data);
+    try {
+      const data = (await db.getAll<DBProduct>('products')).map(p => ({ ...p, id: p._id }));
+      setProducts(data);
+    } catch (error) {
+      console.error('Error refreshing products:', error);
+    }
   };
 
   const refreshOrders = async () => {
-    const data = await db.getAll<Order>('orders');
-    setOrders(data);
+    try {
+      const data = await db.getAll<Order>('orders');
+      setOrders(data);
+    } catch (error) {
+      console.error('Error refreshing orders:', error);
+    }
   };
 
   const refreshCoupons = async () => {
-    const data = await db.getAll<Coupon>('coupons');
-    setCoupons(data);
+    try {
+      const data = await db.getAll<Coupon>('coupons');
+      setCoupons(data);
+    } catch (error) {
+      console.error('Error refreshing coupons:', error);
+    }
   };
 
   const refreshBanners = async () => {
-    const data = await db.getAll<Banner>('banners');
-    setBanners(data);
+    try {
+      const data = await db.getAll<Banner>('banners');
+      setBanners(data);
+    } catch (error) {
+      console.error('Error refreshing banners:', error);
+    }
   };
 
   const refreshCategories = async () => {
-    const data = await db.getAll<Category>('categories');
-    setCategories(data);
+    try {
+      const data = await db.getAll<Category>('categories');
+      setCategories(data);
+    } catch (error) {
+      console.error('Error refreshing categories:', error);
+    }
   };
 
   // Order Management
@@ -184,34 +209,41 @@ export function AppProvider({ children }: { children: ReactNode }) {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     } as DBProduct);
+    await refreshProducts();
     return { ...product, id: product._id };
   };
 
   const updateProduct = async (productId: string, productData: Partial<Product>) => {
     const { id, ...dataWithoutId } = productData;
     await db.update<DBProduct>('products', productId, dataWithoutId);
+    await refreshProducts();
   };
 
   const deleteProduct = async (productId: string) => {
     await db.delete('products', productId);
+    await refreshProducts();
   };
 
   // Coupon Management
   const createCoupon = async (couponData: Omit<Coupon, '_id' | 'createdAt' | 'updatedAt' | 'usedCount'>): Promise<Coupon> => {
-    return await db.create<Coupon>('coupons', { 
+    const result = await db.create<Coupon>('coupons', { 
       ...couponData, 
       usedCount: 0,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     } as Coupon);
+    await refreshCoupons();
+    return result;
   };
 
   const updateCoupon = async (couponId: string, couponData: Partial<Coupon>) => {
     await db.update<Coupon>('coupons', couponId, couponData);
+    await refreshCoupons();
   };
 
   const deleteCoupon = async (couponId: string) => {
     await db.delete('coupons', couponId);
+    await refreshCoupons();
   };
 
   const validateCoupon = (code: string, orderValue: number) => {
@@ -246,19 +278,44 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   // Banner Management
   const createBanner = async (bannerData: Omit<Banner, '_id' | 'createdAt' | 'updatedAt'>): Promise<Banner> => {
-    return await db.create<Banner>('banners', {
+    const result = await db.create<Banner>('banners', {
       ...bannerData,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     } as Banner);
+    await refreshBanners();
+    return result;
   };
 
   const updateBanner = async (bannerId: string, bannerData: Partial<Banner>) => {
     await db.update<Banner>('banners', bannerId, bannerData);
+    await refreshBanners();
   };
 
   const deleteBanner = async (bannerId: string) => {
     await db.delete('banners', bannerId);
+    await refreshBanners();
+  };
+
+  // Category Management
+  const createCategory = async (categoryData: Omit<Category, '_id' | 'createdAt' | 'updatedAt'>): Promise<Category> => {
+    const result = await db.create<Category>('categories', {
+      ...categoryData,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    } as Category);
+    await refreshCategories();
+    return result;
+  };
+
+  const updateCategory = async (categoryId: string, categoryData: Partial<Category>) => {
+    await db.update<Category>('categories', categoryId, categoryData);
+    await refreshCategories();
+  };
+
+  const deleteCategory = async (categoryId: string) => {
+    await db.delete('categories', categoryId);
+    await refreshCategories();
   };
 
   return (
@@ -292,7 +349,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
         validateCoupon,
         createBanner,
         updateBanner,
-        deleteBanner
+        deleteBanner,
+        createCategory,
+        updateCategory,
+        deleteCategory
       }}
     >
       {children}
@@ -336,6 +396,9 @@ export function useApp() {
       createBanner: async () => ({ _id: '', type: 'hero-main', title: '', image: '', link: '', isActive: false, order: 0, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() }),
       updateBanner: async () => {},
       deleteBanner: async () => {},
+      createCategory: async () => ({ _id: '', name: '', slug: '', subCategories: [], isActive: false, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() }),
+      updateCategory: async () => {},
+      deleteCategory: async () => {},
     } as AppContextType;
   }
   return context;

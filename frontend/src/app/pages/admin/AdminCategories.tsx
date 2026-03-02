@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { Plus, Pencil, Trash2, X, FolderTree } from 'lucide-react';
-import { Category, db } from '../../services/database';
+import { Category } from '../../services/database';
 import { useApp } from '../../context/AppContext';
 
 export default function AdminCategories() {
-  const { categories } = useApp();
+  const { categories, createCategory, updateCategory, deleteCategory } = useApp();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
   const [formData, setFormData] = useState<Partial<Category>>({
@@ -15,21 +15,21 @@ export default function AdminCategories() {
   });
   const [subCategoryInput, setSubCategoryInput] = useState({ name: '', slug: '' });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (editingCategory) {
-      db.update('categories', editingCategory._id, formData);
+      await updateCategory(editingCategory._id, formData);
     } else {
-      db.create('categories', formData);
+      await createCategory(formData as Omit<Category, '_id' | 'createdAt' | 'updatedAt'>);
     }
     
     closeModal();
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
     if (confirm('Are you sure you want to delete this category? This action cannot be undone.')) {
-      db.delete('categories', id);
+      await deleteCategory(id);
     }
   };
 
