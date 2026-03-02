@@ -9,6 +9,7 @@ export default function AdminBanners() {
   const [editingBanner, setEditingBanner] = useState<Banner | null>(null);
   
   const [formData, setFormData] = useState({
+    type: 'hero-main' as Banner['type'],
     title: '',
     subtitle: '',
     image: '',
@@ -20,6 +21,7 @@ export default function AdminBanners() {
 
   const resetForm = () => {
     setFormData({
+      type: 'hero-main',
       title: '',
       subtitle: '',
       image: '',
@@ -35,6 +37,7 @@ export default function AdminBanners() {
     if (banner) {
       setEditingBanner(banner);
       setFormData({
+        type: banner.type,
         title: banner.title,
         subtitle: banner.subtitle,
         image: banner.image,
@@ -58,10 +61,11 @@ export default function AdminBanners() {
     resetForm();
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     const bannerData = {
+      type: formData.type || 'hero-main',
       title: formData.title,
       subtitle: formData.subtitle,
       image: formData.image,
@@ -72,9 +76,9 @@ export default function AdminBanners() {
     };
 
     if (editingBanner) {
-      updateBanner(editingBanner._id, bannerData);
+      await updateBanner(editingBanner._id, bannerData);
     } else {
-      createBanner(bannerData);
+      await createBanner(bannerData as Omit<Banner, '_id' | 'createdAt' | 'updatedAt'>);
     }
     
     closeModal();
@@ -221,7 +225,8 @@ export default function AdminBanners() {
                 </div>
               </div>
             </div>
-          </div>          </>        ))}
+          </div>
+        ))}
       </div>
 
       {/* Banner Modal */}
@@ -239,6 +244,20 @@ export default function AdminBanners() {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6">
+              <div>
+                <label className="block text-sm font-medium mb-2">Banner Type *</label>
+                <select
+                  required
+                  value={formData.type}
+                  onChange={(e) => setFormData(prev => ({ ...prev, type: e.target.value as Banner['type'] }))}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                >
+                  <option value="hero-main">Hero Main</option>
+                  <option value="hero-side">Hero Side</option>
+                  <option value="casual-inspiration">Casual Inspiration</option>
+                </select>
+              </div>
+
               <div>
                 <label className="block text-sm font-medium mb-2">Title *</label>
                 <input
