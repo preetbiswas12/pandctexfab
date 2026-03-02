@@ -1,6 +1,12 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
+  clerkId: {
+    type: String,
+    required: true,
+    unique: true,
+    index: true,
+  },
   name: {
     type: String,
     required: true,
@@ -10,10 +16,6 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
     lowercase: true,
-  },
-  password: {
-    type: String,
-    required: false, // Not required for OAuth users
   },
   profileImage: {
     type: String,
@@ -31,21 +33,6 @@ const userSchema = new mongoose.Schema({
     state: String,
     zipCode: String,
     country: String,
-  },
-  
-  // OAuth fields
-  googleId: {
-    type: String,
-    default: null,
-  },
-  facebookId: {
-    type: String,
-    default: null,
-  },
-  authProvider: {
-    type: String,
-    enum: ['local', 'google', 'facebook'],
-    default: 'local',
   },
   
   // Account status

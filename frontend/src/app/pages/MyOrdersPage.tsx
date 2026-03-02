@@ -1,19 +1,20 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router';
 import { Package, Truck, CheckCircle, Clock, XCircle, ChevronRight } from 'lucide-react';
+import { useUser } from '@clerk/clerk-react';
 import { useApp } from '../context/AppContext';
-import { useAuth } from '../context/AuthContext';
 import { Order } from '../services/database';
 
 export default function MyOrdersPage() {
   const navigate = useNavigate();
-  const { user, isAuthenticated } = useAuth();
+  const { user, isLoaded } = useUser();
   const { orders } = useApp();
 
-  const userEmail = user?.email || '';
+  const userEmail = user?.emailAddresses[0]?.emailAddress || '';
 
   // Use useMemo to filter and sort orders without causing re-renders
   const myOrders = useMemo(() => {
+    if (!isLoaded) return [];
     if (!userEmail) return [];
     
     const userOrders = orders.filter(
@@ -24,7 +25,7 @@ export default function MyOrdersPage() {
     return [...userOrders].sort((a, b) => 
       new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     );
-  }, [orders, userEmail]); // Recalculate when orders or userEmail changes
+  }, [orders, userEmail, isLoaded]); // Recalculate when orders or userEmail changes
 
   const getStatusInfo = (status: Order['status']) => {
     switch (status) {

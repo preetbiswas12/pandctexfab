@@ -17,7 +17,9 @@ import AdminProducts from "./pages/admin/AdminProducts";
 import AdminCoupons from "./pages/admin/AdminCoupons";
 import AdminCategories from "./pages/admin/AdminCategories";
 import BannersPage from "./pages/admin/BannersPage";
-import AuthPage from "./pages/AuthPage";
+import SignInPage from "./pages/SignInPage";
+import SignUpPage from "./pages/SignUpPage";
+import SSOCallbackPage from "./pages/SSOCallbackPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import FAQPage from "./pages/FAQPage";
 import ContactPage from "./pages/ContactPage";
@@ -50,8 +52,9 @@ export const router = createBrowserRouter([
           { path: "orders", Component: MyOrdersPage },
           { path: "order/:orderId", Component: OrderDetailPage },
           { path: "profile", Component: ProfilePage },
-          { path: "sign-in", Component: AuthPage },
-          { path: "sign-up", Component: AuthPage },
+          { path: "sign-in", Component: SignInPage },
+          { path: "sign-up", Component: SignUpPage },
+          { path: "sign-in/sso-callback", Component: SSOCallbackPage },
           { path: "faq", Component: FAQPage },
           { path: "contact", Component: ContactPage },
           { path: "about", Component: AboutPage },
@@ -61,6 +64,7 @@ export const router = createBrowserRouter([
           { path: "privacy", Component: PrivacyPage },
           { path: "sitemap", Component: SitemapPage },
           { path: "cookies", Component: CookieSettingsPage },
+          { path: "*", Component: NotFoundPage },
           {
             path: "admin",
             Component: AdminDashboard,
@@ -72,8 +76,7 @@ export const router = createBrowserRouter([
               { path: "coupons", Component: AdminCoupons },
               { path: "banners", Component: BannersPage }
             ]
-          },
-          { path: "*", Component: NotFoundPage }
+          }
         ]
       }
     ]

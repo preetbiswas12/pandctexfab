@@ -2,8 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { gsap } from 'gsap';
 import { Menu, X, Home, ShoppingBag, Heart, User, ShoppingCart, LogOut } from 'lucide-react';
+import { useUser, useClerk } from '@clerk/clerk-react';
 import { useApp } from '../context/AppContext';
-import { useAuth } from '../context/AuthContext';
 import { CATEGORIES } from '../types';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -17,7 +17,8 @@ export function Navbar({ }: NavbarProps) {
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { cartItems, wishlist } = useApp();
-  const { user, isAuthenticated, logout } = useAuth();
+  const { user, isLoaded } = useUser();
+  const { signOut } = useClerk();
 
   const totalCartItems = cartItems.reduce((sum, item) => sum + item.cartQuantity, 0);
 
@@ -53,21 +54,21 @@ export function Navbar({ }: NavbarProps) {
             className="absolute left-1/2 -translate-x-1/2 text-lg md:text-xl lg:text-2xl font-extrabold whitespace-nowrap" 
             style={{ fontFamily: "'Century Gothic', 'CenturyGothic', 'Apple Gothic', sans-serif" }}
           >
-            AURACLOTHINGS
+            P&C Texfab
           </Link>
 
           {/* Right: Auth - Pushed far right */}
           <div className="ml-auto flex items-center gap-4 flex-shrink-0">
             {/* Desktop Auth */}
             <div className="hidden md:flex items-center gap-4">
-              {isAuthenticated && user ? (
+              {isLoaded && user ? (
                 <>
                   <Link to="/profile" className="hover:opacity-70 transition-opacity flex items-center">
-                    <span className="text-xs md:text-sm font-semibold tracking-tight text-magenta-600 hover:text-magenta-700">{user.name}</span>
+                    <span className="text-xs md:text-sm font-semibold tracking-tight text-magenta-600 hover:text-magenta-700">{user.firstName || user.emailAddresses[0]?.emailAddress}</span>
                   </Link>
                   <button
-                    onClick={() => {
-                      logout();
+                    onClick={async () => {
+                      await signOut();
                       navigate('/');
                     }}
                     className="hover:opacity-70 transition-opacity flex items-center gap-2"
@@ -84,14 +85,14 @@ export function Navbar({ }: NavbarProps) {
 
             {/* Mobile Auth */}
             <div className="md:hidden flex items-center gap-3">
-              {isAuthenticated && user ? (
+              {isLoaded && user ? (
                 <>
                   <Link to="/profile" className="hover:opacity-70 transition-opacity flex items-center">
                     <User size={20} className="text-gray-700" />
                   </Link>
                   <button
-                    onClick={() => {
-                      logout();
+                    onClick={async () => {
+                      await signOut();
                       navigate('/');
                     }}
                     className="hover:opacity-70 transition-opacity flex items-center"

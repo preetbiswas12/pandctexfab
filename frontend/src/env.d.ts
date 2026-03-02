@@ -28,6 +28,7 @@ interface ImportMetaEnv {
   readonly VITE_BUSINESS_EMAIL: string;
   readonly VITE_BUSINESS_PHONE: string;
   readonly VITE_BUSINESS_ADDRESS: string;
+  readonly VITE_CLERK_PUBLISHABLE_KEY: string;
 }
 
 interface ImportMeta {

@@ -53,7 +53,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <h3 className="font-semibold text-lg mb-1">Email</h3>
-                  <p className="text-gray-600">support@auraclothings.com</p>
+                  <p className="text-gray-600">support@P&C Texfab.com</p>
                   <p className="text-sm text-gray-500">We'll respond within 24 hours</p>
                 </div>
               </div>
@@ -77,7 +77,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <h3 className="font-semibold text-lg mb-1">Address</h3>
-                  <p className="text-gray-600">AuraClothings</p>
+                  <p className="text-gray-600">P&C Texfab</p>
                   <p className="text-gray-600">India</p>
                 </div>
               </div>

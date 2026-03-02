@@ -2,12 +2,13 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router';
 import { Edit2, MapPin, Phone, Mail, LogOut, ChevronRight, Package, Heart, Settings } from 'lucide-react';
 import { gsap } from 'gsap';
+import { useUser, useClerk } from '@clerk/clerk-react';
 import { useApp } from '../context/AppContext';
-import { useAuth } from '../context/AuthContext';
 
 export default function ProfilePage() {
   const navigate = useNavigate();
-  const { user, isAuthenticated, logout } = useAuth();
+  const { user, isLoaded } = useUser();
+  const { signOut } = useClerk();
   const { orders, wishlist } = useApp();
   const profileRef = useRef<HTMLDivElement>(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -26,15 +27,17 @@ export default function ProfilePage() {
   });
 
   useEffect(() => {
-    if (!isAuthenticated || !user) {
-      navigate('/sign-in');
+    if (!isLoaded || !user) {
+      if (isLoaded) {
+        navigate('/sign-in');
+      }
       return;
     }
 
     setUserData(prev => ({
       ...prev,
-      name: user.name || '',
-      email: user.email || '',
+      name: `${user.firstName || ''} ${user.lastName || ''}`.trim(),
+      email: user.emailAddresses[0]?.emailAddress || '',
     }));
 
     // Animate on mount
@@ -50,13 +53,13 @@ export default function ProfilePage() {
     return () => ctx.revert();
   }, [isLoaded, user]);
 
-  const userEmail = user?.primaryEmailAddress?.emailAddress;
+  const userEmail = user?.emailAddresses[0]?.emailAddress;
   const userOrders = orders.filter(
     order => order.customerEmail.toLowerCase() === (userEmail?.toLowerCase() || '')
   );
 
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+    await signOut();
     navigate('/');
   };
 

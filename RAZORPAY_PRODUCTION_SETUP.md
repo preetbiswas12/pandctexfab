@@ -188,8 +188,8 @@ Razorpay will send payment events to this endpoint:
 5. Click **Create webhook**
 
 ### Production Webhook URL Examples:
-- Live: `https://app.auraclothings.com/api/payments/webhook`
-- Staging: `https://staging.auraclothings.com/api/payments/webhook`
+- Live: `https://app.P&C Texfab.com/api/payments/webhook`
+- Staging: `https://staging.P&C Texfab.com/api/payments/webhook`
 
 ## Frontend Integration
 

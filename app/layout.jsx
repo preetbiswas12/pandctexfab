@@ -9,26 +9,26 @@ import { assets } from '@/assets/assets'
 export const metadata = {
     title: "Aura Clothings - Premium Fashion Store",
     description: "Aura Clothings is your one stop for all kinds of premium fashion clothing. Explore exquisite designs in dresses, outfits, and more with free shipping worldwide, T&C apply.",
-    keywords: "clothing, fashion, premium fashion, online clothing store, auraclothings",
+    keywords: "clothing, fashion, premium fashion, online clothing store, P&C Texfab",
     icons: {
-        icon: '/assets/auraclothings.jpg'
+        icon: '/assets/P&C Texfab.jpg'
     },
     openGraph: {
         type: 'website',
-        url: 'https://auraclothings.com',
+        url: 'https://P&C Texfab.com',
         title: 'Aura Clothings - Premium Fashion',
         description: 'Discover exquisite fashion designs at Aura Clothings',
         siteName: 'Aura Clothings',
         images: [
             {
-                url: 'https://auraclothings.com/logo.png',
+                url: 'https://P&C Texfab.com/logo.png',
                 width: 1200,
                 height: 630,
                 alt: 'Aura Clothings'
             }
         ]
     },
-    metadataBase: new URL('https://auraclothings.com')
+    metadataBase: new URL('https://P&C Texfab.com')
 };
 
 export default function RootLayout({ children }) {
