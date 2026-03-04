@@ -51,7 +51,15 @@ export default function CartPage() {
             <p className="text-lg opacity-70 mb-8">
               Add some fabrics to get started
             </p>
-            <NoiseButton onClick={() => navigate('/shop')}>
+            <NoiseButton 
+              onClick={() => navigate('/shop')}
+              containerClassName="mx-auto w-fit"
+              gradientColors={[
+                'rgb(255, 120, 150)',
+                'rgb(100, 180, 255)',
+                'rgb(255, 180, 100)',
+              ]}
+            >
               Start Shopping
             </NoiseButton>
           </div>
