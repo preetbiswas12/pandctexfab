@@ -18,14 +18,14 @@ export default function TermsPage() {
         <section>
           <h2 className="text-2xl font-bold mb-4">1. Agreement to Terms</h2>
           <p>
-            By accessing and using AuraClothings, you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by the above, please do not use this service.
+            By accessing and using P&C Texfab, you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by the above, please do not use this service.
           </p>
         </section>
 
         <section>
           <h2 className="text-2xl font-bold mb-4">2. Use License</h2>
           <p className="mb-3">
-            Permission is granted to temporarily download one copy of the materials (information or software) on AuraClothings website for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title, and under this license you may not:
+            Permission is granted to temporarily download one copy of the materials (information or software) on P&C Texfab website for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title, and under this license you may not:
           </p>
           <ul className="list-disc list-inside space-y-2 ml-4">
             <li>Modifying or copying the materials</li>
@@ -39,35 +39,35 @@ export default function TermsPage() {
         <section>
           <h2 className="text-2xl font-bold mb-4">3. Disclaimer</h2>
           <p>
-            The materials on AuraClothings website are provided on an 'as is' basis. AuraClothings makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties including, without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.
+            The materials on P&C Texfab website are provided on an 'as is' basis. P&C Texfab makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties including, without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.
           </p>
         </section>
 
         <section>
           <h2 className="text-2xl font-bold mb-4">4. Limitations</h2>
           <p>
-            In no event shall AuraClothings or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on AuraClothings website.
+            In no event shall P&C Texfab or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on P&C Texfab website.
           </p>
         </section>
 
         <section>
           <h2 className="text-2xl font-bold mb-4">5. Accuracy of Materials</h2>
           <p>
-            The materials appearing on AuraClothings website could include technical, typographical, or photographic errors. AuraClothings does not warrant that any of the materials on the website are accurate, complete, or current. AuraClothings may make changes to the materials contained on the website at any time without notice.
+            The materials appearing on P&C Texfab website could include technical, typographical, or photographic errors. P&C Texfab does not warrant that any of the materials on the website are accurate, complete, or current. P&C Texfab may make changes to the materials contained on the website at any time without notice.
           </p>
         </section>
 
         <section>
           <h2 className="text-2xl font-bold mb-4">6. Links</h2>
           <p>
-            AuraClothings has not reviewed all of the sites linked to its website and is not responsible for the contents of any such linked site. The inclusion of any link does not imply endorsement by AuraClothings of the site. Use of any such linked website is at the user's own risk.
+            P&C Texfab has not reviewed all of the sites linked to its website and is not responsible for the contents of any such linked site. The inclusion of any link does not imply endorsement by P&C Texfab of the site. Use of any such linked website is at the user's own risk.
           </p>
         </section>
 
         <section>
           <h2 className="text-2xl font-bold mb-4">7. Modifications</h2>
           <p>
-            AuraClothings may revise these terms of service for the website at any time without notice. By using this website, you are agreeing to be bound by the then current version of these terms of service.
+            P&C Texfab may revise these terms of service for the website at any time without notice. By using this website, you are agreeing to be bound by the then current version of these terms of service.
           </p>
         </section>
 
@@ -80,7 +80,7 @@ export default function TermsPage() {
 
         <section className="bg-magenta-50 p-6 rounded-lg mt-8">
           <p className="text-sm">
-            If you have any questions about these Terms of Service, please contact us at support@AuraClothings.com
+            If you have any questions about these Terms of Service, please contact us at support@P&C Texfab.com
           </p>
         </section>
       </div>

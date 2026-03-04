@@ -14,9 +14,9 @@ export default function App() {
   return (
     <ClerkProvider
       publishableKey={clerkPubKey}
-      signInFallbackRedirectUrl="https://auraclothings.qzz.io/"
-      signUpFallbackRedirectUrl="https://auraclothings.qzz.io/"
-      afterSignOutUrl="https://auraclothings.qzz.io/"
+      signInFallbackRedirectUrl="https://pandctexfab.qzz.io/"
+      signUpFallbackRedirectUrl="https://pandctexfab.qzz.io/"
+      afterSignOutUrl="https://pandctexfab.qzz.io/"
     >
       <RouterProvider router={router} />
     </ClerkProvider>

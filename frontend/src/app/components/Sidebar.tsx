@@ -180,7 +180,7 @@ export function Sidebar() {
         {/* Header with Search */}
         <div className="sticky top-0 bg-gradient-to-r from-magenta-50 to-golden-50 px-6 py-6 border-b border-gray-100">
           <div className="flex items-center justify-between mb-4">
-            <h1 className="text-2xl font-black tracking-tight">AuraClothings</h1>
+            <h1 className="text-2xl font-black tracking-tight">P&C Texfab</h1>
             <button
               onClick={handleCloseSidebar}
               className="p-1 hover:bg-gray-200 rounded-lg transition-colors"

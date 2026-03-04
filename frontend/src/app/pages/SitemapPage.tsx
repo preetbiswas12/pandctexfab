@@ -63,7 +63,7 @@ export default function SitemapPage() {
             Site Map
           </h1>
           <p className="text-lg text-gray-600">
-            Navigation guide to all pages on AuraClothings.
+            Navigation guide to all pages on P&C Texfab.
           </p>
         </div>
       </div>

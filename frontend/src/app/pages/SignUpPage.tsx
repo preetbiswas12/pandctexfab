@@ -4,7 +4,7 @@ export default function SignUpPage() {
   // Redirect to Clerk's hosted Account Portal with return_back_url
   useEffect(() => {
     // Add redirect_url param to tell Clerk where to send user after sign-up
-    window.location.href = "https://accounts.auraclothings.qzz.io/sign-up?redirect_url=https://auraclothings.qzz.io/";
+    window.location.href = "https://accounts.pandctexfab.qzz.io/sign-up?redirect_url=https://pandctexfab.qzz.io/";
   }, []);
 
   return (

@@ -54,7 +54,7 @@ export function Navbar({ }: NavbarProps) {
             className="absolute left-1/2 -translate-x-1/2 text-lg md:text-xl lg:text-2xl font-extrabold whitespace-nowrap" 
             style={{ fontFamily: "'Century Gothic', 'CenturyGothic', 'Apple Gothic', sans-serif" }}
           >
-            AuraClothings
+            P&C Texfab
           </Link>
 
           {/* Right: Auth - Pushed far right */}
