@@ -2,7 +2,7 @@
 // Supports both localStorage (development) and MongoDB API (production)
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-const USE_LOCAL_STORAGE = !API_URL.includes('localhost:5000');
+const USE_LOCAL_STORAGE = API_URL.includes('localhost:5000');
 
 export interface Product {
   _id: string;
