@@ -4,6 +4,7 @@ import { useApp } from '../context/AppContext';
 import { Heart, ShoppingCart, Check } from 'lucide-react';
 import { gsap } from 'gsap';
 import { convertGoogleDriveLink } from '../../lib/googleDriveUtils';
+import { NoiseButton } from '@/components/ui/noise-button';
 
 export default function ProductDetailPage() {
   const { id } = useParams();
@@ -203,23 +204,28 @@ export default function ProductDetailPage() {
 
             {/* Actions */}
             <div className="flex gap-4">
-              <button
+              <NoiseButton
                 onClick={handleAddToCart}
                 disabled={product.quantity === 0}
-                className="flex-1 bg-black text-white px-8 py-4 rounded-full font-medium hover:bg-gray-800 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                containerClassName="w-fit"
+                gradientColors={[
+                  'rgb(255, 120, 150)',
+                  'rgb(100, 180, 255)',
+                  'rgb(255, 180, 100)',
+                ]}
               >
                 {addedToCart ? (
                   <>
-                    <Check size={20} />
+                    <Check size={20} className="inline mr-2" />
                     Added to Cart
                   </>
                 ) : (
                   <>
-                    <ShoppingCart size={20} />
+                    <ShoppingCart size={20} className="inline mr-2" />
                     Add to Cart
                   </>
                 )}
-              </button>
+              </NoiseButton>
               <button
                 onClick={() => toggleWishlist(product._id)}
                 className={`w-14 h-14 rounded-full border-2 flex items-center justify-center transition-all ${

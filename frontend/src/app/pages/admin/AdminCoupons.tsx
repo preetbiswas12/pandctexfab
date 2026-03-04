@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Plus, Edit, Trash2, X, Tag } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { Coupon } from '../../services/database';
+import { NoiseButton } from '@/components/ui/noise-button';
 
 export default function AdminCoupons() {
   const { coupons, createCoupon, updateCoupon, deleteCoupon: deleteCouponDB } = useApp();
@@ -101,13 +102,18 @@ export default function AdminCoupons() {
           <h1 className="text-4xl font-bold tracking-tight mb-2">Coupons</h1>
           <p className="text-lg opacity-70">{coupons.length} total coupons</p>
         </div>
-        <button
+        <NoiseButton
           onClick={() => openModal()}
-          className="bg-black text-white px-6 py-3 rounded-full font-medium hover:bg-gray-800 transition-all flex items-center gap-2"
+          containerClassName="w-fit"
+          gradientColors={[
+            'rgb(255, 120, 150)',
+            'rgb(100, 180, 255)',
+            'rgb(255, 180, 100)',
+          ]}
         >
-          <Plus size={20} />
+          <Plus size={20} className="inline mr-2" />
           Add Coupon
-        </button>
+        </NoiseButton>
       </div>
 
       {/* Coupons Grid */}
@@ -351,12 +357,16 @@ export default function AdminCoupons() {
                 >
                   Cancel
                 </button>
-                <button
-                  type="submit"
-                  className="flex-1 bg-black text-white px-6 py-3 rounded-full font-medium hover:bg-gray-800 transition-all"
+                <NoiseButton
+                  containerClassName="flex-1"
+                  gradientColors={[
+                    'rgb(100, 200, 255)',
+                    'rgb(255, 150, 100)',
+                    'rgb(150, 255, 150)',
+                  ]}
                 >
                   {editingCoupon ? 'Update Coupon' : 'Add Coupon'}
-                </button>
+                </NoiseButton>
               </div>
             </form>
           </div>

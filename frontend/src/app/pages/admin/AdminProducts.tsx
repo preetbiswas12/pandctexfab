@@ -3,6 +3,7 @@ import { Plus, Search, Edit, Trash2, X, Upload, Image as ImageIcon } from 'lucid
 import { CATEGORIES } from '../../types';
 import { useApp } from '../../context/AppContext';
 import { convertGoogleDriveLink } from '../../../lib/googleDriveUtils';
+import { NoiseButton } from '@/components/ui/noise-button';
 
 export default function AdminProducts() {
   const { products, createProduct, updateProduct, deleteProduct: deleteProductDB } = useApp();
@@ -217,13 +218,18 @@ export default function AdminProducts() {
           <h1 className="text-4xl font-bold tracking-tight mb-2">Products</h1>
           <p className="text-lg opacity-70">{products.length} total products</p>
         </div>
-        <button
+        <NoiseButton
           onClick={() => openModal()}
-          className="bg-black text-white px-6 py-3 rounded-full font-medium hover:bg-gray-800 transition-all flex items-center gap-2"
+          containerClassName="w-fit"
+          gradientColors={[
+            'rgb(255, 120, 150)',
+            'rgb(100, 180, 255)',
+            'rgb(255, 180, 100)',
+          ]}
         >
-          <Plus size={20} />
+          <Plus size={20} className="inline mr-2" />
           Add Product
-        </button>
+        </NoiseButton>
       </div>
 
       {/* Search */}
@@ -517,13 +523,17 @@ export default function AdminProducts() {
                 >
                   Cancel
                 </button>
-                <button
-                  type="submit"
+                <NoiseButton
                   disabled={uploadingImages}
-                  className="flex-1 bg-black text-white px-6 py-3 rounded-full font-medium hover:bg-gray-800 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  containerClassName="flex-1"
+                  gradientColors={[
+                    'rgb(100, 200, 255)',
+                    'rgb(255, 150, 100)',
+                    'rgb(150, 255, 150)',
+                  ]}
                 >
                   {editingProduct ? 'Update Product' : 'Add Product'}
-                </button>
+                </NoiseButton>
               </div>
             </form>
           </div>

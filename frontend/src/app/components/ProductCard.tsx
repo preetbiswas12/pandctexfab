@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router';
 import { gsap } from 'gsap';
 import { Product } from '../context/AppContext';
 import { convertGoogleDriveLink } from '../../lib/googleDriveUtils';
+import { NoiseButton } from '@/components/ui/noise-button';
 
 interface ProductCardProps {
   product: Product;
@@ -75,15 +76,20 @@ export function ProductCard({ product, onAddToCart, onToggleWishlist, isInWishli
             className={isInWishlist ? 'fill-white text-white' : 'text-white'}
           />
         </button>
-        <button
+        <NoiseButton
           onClick={(e) => {
             e.stopPropagation();
             onAddToCart(product);
           }}
-          className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black text-white px-6 py-2 rounded-full text-sm font-medium opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 hover:scale-105 active:scale-95"
+          containerClassName="absolute bottom-4 left-1/2 -translate-x-1/2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300"
+          gradientColors={[
+            'rgb(255, 120, 150)',
+            'rgb(100, 180, 255)',
+            'rgb(255, 180, 100)',
+          ]}
         >
           Add to Cart
-        </button>
+        </NoiseButton>
       </div>
       <h3 
         className="font-medium text-lg md:text-2xl tracking-tight mb-1 cursor-pointer hover:opacity-70"

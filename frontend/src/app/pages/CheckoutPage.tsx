@@ -472,13 +472,17 @@ export default function CheckoutPage() {
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
                   />
                 </div>
-                <button
-                  type="button"
+                <NoiseButton
                   onClick={handleApplyCoupon}
-                  className="w-full bg-black text-white px-8 py-4 rounded-full text-lg font-medium hover:bg-gray-800 transition-all"
+                  containerClassName="w-fit"
+                  gradientColors={[
+                    'rgb(255, 120, 150)',
+                    'rgb(100, 180, 255)',
+                    'rgb(255, 180, 100)',
+                  ]}
                 >
                   Apply Coupon
-                </button>
+                </NoiseButton>
                 {couponError && <p className="text-red-500 text-sm">{couponError}</p>}
                 {appliedCoupon && (
                   <p className="text-green-500 text-sm">
@@ -488,10 +492,14 @@ export default function CheckoutPage() {
               </div>
             </div>
 
-            <button
-              type="submit"
+            <NoiseButton
               disabled={isProcessing}
-              className="w-full bg-black text-white px-8 py-4 rounded-full text-lg font-medium hover:bg-gray-800 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              containerClassName="w-fit"
+              gradientColors={[
+                'rgb(100, 200, 255)',
+                'rgb(255, 150, 100)',
+                'rgb(150, 255, 150)',
+              ]}
             >
               {isProcessing ? (
                 <>
@@ -501,7 +509,7 @@ export default function CheckoutPage() {
               ) : (
                 'Proceed to Payment'
               )}
-            </button>
+            </NoiseButton>
           </form>
         </div>
 

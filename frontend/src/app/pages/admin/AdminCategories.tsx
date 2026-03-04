@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Plus, Pencil, Trash2, X, FolderTree } from 'lucide-react';
 import { Category } from '../../services/database';
 import { useApp } from '../../context/AppContext';
+import { NoiseButton } from '@/components/ui/noise-button';
 
 export default function AdminCategories() {
   const { categories, createCategory, updateCategory, deleteCategory } = useApp();
@@ -106,13 +107,18 @@ export default function AdminCategories() {
           <h1 className="text-2xl font-bold mb-2">Category Management</h1>
           <p className="text-gray-600">Manage product categories and subcategories</p>
         </div>
-        <button
+        <NoiseButton
           onClick={() => openModal()}
-          className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 flex items-center gap-2"
+          containerClassName="w-fit"
+          gradientColors={[
+            'rgb(255, 120, 150)',
+            'rgb(100, 180, 255)',
+            'rgb(255, 180, 100)',
+          ]}
         >
-          <Plus className="w-4 h-4" />
+          <Plus className="w-4 h-4 inline mr-2" />
           Add Category
-        </button>
+        </NoiseButton>
       </div>
 
       {/* Categories List */}
@@ -265,12 +271,16 @@ export default function AdminCategories() {
                 >
                   Cancel
                 </button>
-                <button
-                  type="submit"
-                  className="flex-1 bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800"
+                <NoiseButton
+                  containerClassName="flex-1"
+                  gradientColors={[
+                    'rgb(100, 200, 255)',
+                    'rgb(255, 150, 100)',
+                    'rgb(150, 255, 150)',
+                  ]}
                 >
                   {editingCategory ? 'Update' : 'Create'} Category
-                </button>
+                </NoiseButton>
               </div>
             </form>
           </div>

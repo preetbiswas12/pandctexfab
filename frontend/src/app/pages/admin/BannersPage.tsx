@@ -3,6 +3,7 @@ import { Pencil, X } from 'lucide-react';
 import { Banner } from '../../services/database';
 import { useApp } from '../../context/AppContext';
 import { convertGoogleDriveLink } from '../../../lib/googleDriveUtils';
+import { NoiseButton } from '@/components/ui/noise-button';
 
 export default function BannersPage() {
   const { banners, updateBanner } = useApp();
@@ -203,12 +204,16 @@ export default function BannersPage() {
                 >
                   Cancel
                 </button>
-                <button
-                  type="submit"
-                  className="flex-1 bg-black text-white py-3 rounded-lg hover:bg-gray-800 transition-colors font-medium"
+                <NoiseButton
+                  containerClassName="flex-1"
+                  gradientColors={[
+                    'rgb(100, 200, 255)',
+                    'rgb(255, 150, 100)',
+                    'rgb(150, 255, 150)',
+                  ]}
                 >
                   {editingBanner ? 'Update Banner' : 'Create Banner'}
-                </button>
+                </NoiseButton>
               </div>
             </form>
           </div>

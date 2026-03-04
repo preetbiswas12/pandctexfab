@@ -1,8 +1,9 @@
 import { X } from 'lucide-react';
-import { Link } from 'react-router';
+import { useNavigate } from 'react-router';
 import { CartItem } from '../types';
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
+import { NoiseButton } from '@/components/ui/noise-button';
 
 interface ShoppingCartProps {
   isOpen: boolean;
@@ -13,6 +14,7 @@ interface ShoppingCartProps {
 }
 
 export function ShoppingCart({ isOpen, onClose, items, onUpdateQuantity, onRemoveItem }: ShoppingCartProps) {
+  const navigate = useNavigate();
   const total = items.reduce((sum, item) => sum + item.price * item.cartQuantity, 0);
   const cartRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -96,20 +98,34 @@ export function ShoppingCart({ isOpen, onClose, items, onUpdateQuantity, onRemov
               <span>Total:</span>
               <span>${total.toFixed(2)}</span>
             </div>
-            <Link 
-              to="/cart" 
-              onClick={onClose}
-              className="block w-full bg-black text-white py-3 rounded-full font-medium hover:bg-gray-800 transition-all hover:scale-105 active:scale-95 text-center"
+            <NoiseButton
+              onClick={() => {
+                onClose();
+                navigate('/cart');
+              }}
+              containerClassName="w-fit"
+              gradientColors={[
+                'rgb(255, 120, 150)',
+                'rgb(100, 180, 255)',
+                'rgb(255, 180, 100)',
+              ]}
             >
               View Cart
-            </Link>
-            <Link 
-              to="/checkout" 
-              onClick={onClose}
-              className="block w-full border-2 border-black py-3 rounded-full font-medium hover:bg-black hover:text-white transition-all text-center"
+            </NoiseButton>
+            <NoiseButton
+              onClick={() => {
+                onClose();
+                navigate('/checkout');
+              }}
+              containerClassName="w-fit"
+              gradientColors={[
+                'rgb(100, 200, 255)',
+                'rgb(255, 150, 100)',
+                'rgb(150, 255, 150)',
+              ]}
             >
               Checkout
-            </Link>
+            </NoiseButton>
           </div>
         )}
       </div>

@@ -3,6 +3,7 @@ import { Plus, Edit, Trash2, X, Eye, EyeOff, ChevronUp, ChevronDown } from 'luci
 import { useApp } from '../../context/AppContext';
 import { Banner } from '../../services/database';
 import { convertGoogleDriveLink } from '../../../lib/googleDriveUtils';
+import { NoiseButton } from '@/components/ui/noise-button';
 
 export default function AdminBanners() {
   const { banners, createBanner, updateBanner, deleteBanner: deleteBannerDB } = useApp();
@@ -117,13 +118,18 @@ export default function AdminBanners() {
           <h1 className="text-4xl font-bold tracking-tight mb-2">Banners</h1>
           <p className="text-lg opacity-70">{banners.length} total banners</p>
         </div>
-        <button
+        <NoiseButton
           onClick={() => openModal()}
-          className="bg-black text-white px-6 py-3 rounded-full font-medium hover:bg-gray-800 transition-all flex items-center gap-2"
+          containerClassName="w-fit"
+          gradientColors={[
+            'rgb(255, 120, 150)',
+            'rgb(100, 180, 255)',
+            'rgb(255, 180, 100)',
+          ]}
         >
-          <Plus size={20} />
+          <Plus size={20} className="inline mr-2" />
           Add Banner
-        </button>
+        </NoiseButton>
       </div>
 
       {/* Banners List */}
@@ -358,12 +364,16 @@ export default function AdminBanners() {
                 >
                   Cancel
                 </button>
-                <button
-                  type="submit"
-                  className="flex-1 bg-black text-white px-6 py-3 rounded-full font-medium hover:bg-gray-800 transition-all"
+                <NoiseButton
+                  containerClassName="flex-1"
+                  gradientColors={[
+                    'rgb(100, 200, 255)',
+                    'rgb(255, 150, 100)',
+                    'rgb(150, 255, 150)',
+                  ]}
                 >
                   {editingBanner ? 'Update Banner' : 'Add Banner'}
-                </button>
+                </NoiseButton>
               </div>
             </form>
           </div>
