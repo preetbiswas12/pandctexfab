@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Mail, Phone, MapPin, Send } from 'lucide-react';
+import { NoiseButton } from '@/components/ui/noise-button';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -141,13 +142,15 @@ export default function ContactPage() {
                 />
               </div>
 
-              <button
+              <NoiseButton
                 type="submit"
-                className="w-full bg-magenta-600 text-white py-3 rounded-lg font-semibold hover:bg-magenta-700 transition-colors flex items-center justify-center gap-2"
+                containerClassName="w-full"
               >
-                <Send size={20} />
-                Send Message
-              </button>
+                <div className="flex items-center justify-center gap-2">
+                  <Send size={20} />
+                  Send Message
+                </div>
+              </NoiseButton>
 
               {submitted && (
                 <div className="bg-green-100 border-2 border-green-600 text-green-700 px-4 py-3 rounded-lg text-center">

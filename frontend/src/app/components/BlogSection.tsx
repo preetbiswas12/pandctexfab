@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import imgImage25 from "../../assets/ff3c0bb419ab7a36a466902e4bb611c667f4c3c4.png";
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { NoiseButton } from '@/components/ui/noise-button';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -66,9 +67,9 @@ export function BlogSection() {
           <p className="text-sm md:text-base lg:text-lg opacity-80 mb-6 md:mb-8">
             Maybe you don't need to buy new clothes to have nice, cool, fresh looking outfit everyday. Maybe what you need is to combine your clothes collections. Mix and match is the key.
           </p>
-          <button className="border-2 border-black px-8 py-3 rounded-full text-sm font-medium tracking-wider hover:bg-black hover:text-white transition-all hover:scale-105 active:scale-95">
+          <NoiseButton containerClassName="w-fit">
             READ MORE
-          </button>
+          </NoiseButton>
         </div>
       </div>
     </div>

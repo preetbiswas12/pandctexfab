@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router';
 import { useApp } from '../context/AppContext';
+import { NoiseButton } from '@/components/ui/noise-button';
 import { convertGoogleDriveLink } from '../../lib/googleDriveUtils';
 import { Trash2, Heart } from 'lucide-react';
 import { useEffect, useRef } from 'react';
@@ -48,12 +49,12 @@ export default function WishlistPage() {
             <p className="text-lg opacity-70 mb-8">
               Save your favorite items for later
             </p>
-            <button
+            <NoiseButton
               onClick={() => navigate('/shop')}
-              className="bg-black text-white px-8 py-3 rounded-full font-medium hover:bg-gray-800 transition-all"
+              containerClassName="w-fit"
             >
               Start Shopping
-            </button>
+            </NoiseButton>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -85,12 +86,12 @@ export default function WishlistPage() {
                     )}
                   </div>
                   <div className="flex gap-2">
-                    <button
+                    <NoiseButton
                       onClick={() => addToCart(product)}
-                      className="flex-1 bg-black text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-800 transition-all"
+                      containerClassName="flex-1"
                     >
                       Add to Cart
-                    </button>
+                    </NoiseButton>
                     <button
                       onClick={() => toggleWishlist(product._id)}
                       className="w-10 h-10 border-2 border-red-500 rounded-full flex items-center justify-center hover:bg-red-500 hover:text-white transition-all"

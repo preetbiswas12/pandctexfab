@@ -1,5 +1,6 @@
 import { useParams, useNavigate, useSearchParams } from 'react-router';
 import { CheckCircle, CreditCard } from 'lucide-react';
+import { NoiseButton } from '@/components/ui/noise-button';
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { useApp } from '../context/AppContext';
@@ -110,18 +111,18 @@ export default function OrderConfirmationPage() {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
-            <button
+            <NoiseButton
               onClick={() => navigate('/orders')}
-              className="bg-black text-white px-8 py-3 rounded-full font-medium hover:bg-gray-800 transition-all"
+              containerClassName="w-fit"
             >
               Track Your Order
-            </button>
-            <button
+            </NoiseButton>
+            <NoiseButton
               onClick={() => navigate('/shop')}
-              className="border-2 border-black px-8 py-3 rounded-full font-medium hover:bg-black hover:text-white transition-all"
+              containerClassName="w-fit"
             >
               Continue Shopping
-            </button>
+            </NoiseButton>
           </div>
         </div>
       </div>

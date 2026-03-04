@@ -1,7 +1,8 @@
 import { useEffect, useRef } from 'react';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { useApp } from '../context/AppContext';
 import { convertGoogleDriveLink } from '../../lib/googleDriveUtils';
+import { NoiseButton } from '../../components/ui/noise-button';
 import imgImage3 from "../../assets/3071b1fc729091cd0452fb9d0b89106ceec16368.png";
 import imgImage5 from "../../assets/17aa3a2f29a85f64d93c41afa6b64d31b3a88038.png";
 import imgImage7 from "../../assets/837e11f00233936f837e7b69d6a545511b1ba132.png";
@@ -14,6 +15,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 export function HeroSection() {
   const { banners } = useApp();
+  const navigate = useNavigate();
   const heroRef = useRef<HTMLDivElement>(null);
   const mainHeroRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLDivElement>(null);
@@ -128,10 +130,10 @@ export function HeroSection() {
                 {heroMainBanner?.subtitle || defaultHeroMain.subtitle}
               </p>
             </div>
-            <Link to={heroMainBanner?.link || defaultHeroMain.link} className="w-48 md:w-64 lg:w-60 xl:w-72 h-10 lg:h-11 xl:h-12 bg-neutral-900 rounded-[200px] inline-flex justify-center items-center hover:bg-black/80 transition-colors">
-              <span className="text-center text-white text-xs lg:text-xs xl:text-sm font-medium leading-6 tracking-wide">
+            <Link to={heroMainBanner?.link || defaultHeroMain.link} className="w-48 md:w-64 lg:w-60 xl:w-72">
+              <NoiseButton className="text-xs lg:text-xs xl:text-sm">
                 {heroMainBanner?.buttonText || defaultHeroMain.buttonText}
-              </span>
+              </NoiseButton>
             </Link>
           </div>
         </div>
@@ -167,9 +169,9 @@ export function HeroSection() {
           <p className="text-xs md:text-sm lg:text-sm xl:text-base opacity-80 mb-4 md:mb-8 lg:mb-10 xl:mb-12 leading-5 lg:leading-5 xl:leading-6">
             Our favorite combinations for casual outfit that can inspire you to apply on your daily activity.
           </p>
-          <button className="border-2 border-black px-6 md:px-7 lg:px-6 xl:px-8 py-2 md:py-2.5 lg:py-2.5 xl:py-3 rounded-full text-xs lg:text-xs xl:text-sm font-medium tracking-wider hover:bg-black hover:text-white transition-all self-start">
+          <NoiseButton>
             BROWSE INSPIRATIONS
-          </button>
+          </NoiseButton>
         </div>
 
         <div className="w-full lg:flex-1 flex flex-col sm:flex-row justify-start items-stretch gap-2.5">

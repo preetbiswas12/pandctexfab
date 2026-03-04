@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from 'react-router';
 import { Package, Truck, CheckCircle, Clock, XCircle, MapPin, Mail, Phone, User } from 'lucide-react';
 import { useApp } from '../context/AppContext';
+import { NoiseButton } from '@/components/ui/noise-button';
 import { Order } from '../services/database';
 
 export default function OrderDetailPage() {
@@ -19,12 +20,12 @@ export default function OrderDetailPage() {
           <p className="text-lg opacity-70 mb-8">
             The order you're looking for doesn't exist or has been removed.
           </p>
-          <button
+          <NoiseButton
             onClick={() => navigate('/orders')}
-            className="bg-black text-white px-8 py-4 rounded-full text-lg font-medium hover:bg-gray-800 transition-all"
+            containerClassName="w-fit"
           >
             View All Orders
-          </button>
+          </NoiseButton>
         </div>
       </div>
     );

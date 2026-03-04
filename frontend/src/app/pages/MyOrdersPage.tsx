@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router';
 import { Package, Truck, CheckCircle, Clock, XCircle, ChevronRight } from 'lucide-react';
 import { useUser } from '@clerk/clerk-react';
 import { useApp } from '../context/AppContext';
+import { NoiseButton } from '@/components/ui/noise-button';
 import { Order } from '../services/database';
 
 export default function MyOrdersPage() {
@@ -80,12 +81,12 @@ export default function MyOrdersPage() {
             <p className="text-lg opacity-70 mb-8">
               You need to sign in to your account to view your order history and track shipments.
             </p>
-            <button
+            <NoiseButton
               onClick={() => navigate('/sign-in?redirect_url=/orders')}
-              className="bg-black text-white px-8 py-4 rounded-full text-lg font-medium hover:bg-gray-800 transition-all shadow-lg"
+              containerClassName="w-fit"
             >
               Sign In Now
-            </button>
+            </NoiseButton>
           </div>
         </div>
       </div>
@@ -107,12 +108,12 @@ export default function MyOrdersPage() {
             <p className="text-lg opacity-70 mb-8">
               You haven't placed any orders yet. Start shopping now!
             </p>
-            <button
+            <NoiseButton
               onClick={() => navigate('/shop')}
-              className="bg-black text-white px-8 py-4 rounded-full text-lg font-medium hover:bg-gray-800 transition-all"
+              containerClassName="w-fit"
             >
               Start Shopping
-            </button>
+            </NoiseButton>
           </div>
         ) : (
           <div className="space-y-4">

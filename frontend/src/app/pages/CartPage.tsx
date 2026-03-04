@@ -4,6 +4,7 @@ import { Trash2, ShoppingBag } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { config } from '../config/env';
+import { NoiseButton } from '@/components/ui/noise-button';
 
 export default function CartPage() {
   const navigate = useNavigate();
@@ -50,12 +51,9 @@ export default function CartPage() {
             <p className="text-lg opacity-70 mb-8">
               Add some fabrics to get started
             </p>
-            <button
-              onClick={() => navigate('/shop')}
-              className="bg-black text-white px-8 py-3 rounded-full font-medium hover:bg-gray-800 transition-all"
-            >
+            <NoiseButton onClick={() => navigate('/shop')}>
               Start Shopping
-            </button>
+            </NoiseButton>
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-[1fr,400px] gap-8">
@@ -117,11 +115,11 @@ export default function CartPage() {
                   </div>
                   <div className="flex justify-between">
                     <span className="opacity-70">Shipping</span>
-                    <span className=\"font-medium\">₹{shipping.toFixed(2)}</span>
+                    <span className="font-medium">₹{shipping.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="opacity-70">Tax</span>
-                    <span className=\"font-medium\">₹{tax.toFixed(2)}</span>
+                    <span className="font-medium">₹{tax.toFixed(2)}</span>
                   </div>
                   <div className="border-t pt-3 flex justify-between text-xl font-bold">
                     <span>Total</span>
@@ -129,19 +127,19 @@ export default function CartPage() {
                   </div>
                 </div>
 
-                <button
+                <NoiseButton 
                   onClick={() => navigate('/checkout')}
-                  className="w-full bg-black text-white px-8 py-4 rounded-full font-medium hover:bg-gray-800 transition-all"
+                  containerClassName="w-full"
                 >
                   Proceed to Checkout
-                </button>
+                </NoiseButton>
 
-                <button
+                <NoiseButton
                   onClick={() => navigate('/shop')}
-                  className="w-full border-2 border-black px-8 py-4 rounded-full font-medium hover:bg-black hover:text-white transition-all"
+                  containerClassName="w-full"
                 >
                   Continue Shopping
-                </button>
+                </NoiseButton>
               </div>
             </div>
           </div>

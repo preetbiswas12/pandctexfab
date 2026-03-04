@@ -6,6 +6,7 @@ import { config } from '../config/env';
 import { initiateBackendRazorpayPayment, formatCurrency } from '../services/razorpay';
 import { calculateShippingCharge, validatePincodeFormat } from '../services/shiprocket';
 import { Loader2 } from 'lucide-react';
+import { NoiseButton } from '@/components/ui/noise-button';
 
 export default function CheckoutPage() {
   const navigate = useNavigate();
@@ -287,20 +288,20 @@ export default function CheckoutPage() {
         <div className="bg-white rounded-3xl p-12 max-w-md text-center space-y-6">
           <h1 className="text-3xl font-bold">Sign In Required</h1>
           <p className="text-gray-600">You need to be logged in to place an order.</p>
-          <button
+          <NoiseButton 
             onClick={() => navigate('/sign-in')}
-            className="w-full bg-black text-white px-8 py-4 rounded-full text-lg font-medium hover:bg-gray-800 transition-all"
+            containerClassName="w-full"
           >
             Sign In
-          </button>
+          </NoiseButton>
           <p className="text-sm text-gray-500">
             Don't have an account?{' '}
-            <button
+            <NoiseButton
               onClick={() => navigate('/sign-up')}
-              className="font-semibold text-black hover:underline"
+              containerClassName="w-fit inline"
             >
               Sign Up
-            </button>
+            </NoiseButton>
           </p>
         </div>
       </div>

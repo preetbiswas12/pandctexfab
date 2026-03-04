@@ -136,7 +136,14 @@ export default function ProductDetailPage() {
                     selectedImage === index ? 'border-black' : 'border-transparent'
                   }`}
                 >
-                  <img \n                    src={convertGoogleDriveLink(img)} \n                    alt=\"\" \n                    className=\"w-full h-full object-cover\"\n                    onError={(e) => {\n                      (e.target as HTMLImageElement).src = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect fill=%22%23e5e7eb%22 width=%22100%22 height=%22100%22/%3E%3C/svg%3E';\n                    }}\n                  />
+                  <img 
+                    src={convertGoogleDriveLink(img)} 
+                    alt="" 
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect fill=%22%23e5e7eb%22 width=%22100%22 height=%22100%22/%3E%3C/svg%3E';
+                    }}
+                  />
                 </button>
               ))}
             </div>

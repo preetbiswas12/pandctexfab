@@ -4,6 +4,7 @@ import { Edit2, MapPin, Phone, Mail, LogOut, ChevronRight, Package, Heart, Setti
 import { gsap } from 'gsap';
 import { useUser, useClerk } from '@clerk/clerk-react';
 import { useApp } from '../context/AppContext';
+import { NoiseButton } from '@/components/ui/noise-button';
 
 export default function ProfilePage() {
   const navigate = useNavigate();
@@ -84,12 +85,12 @@ export default function ProfilePage() {
           <p className="text-lg opacity-70 mb-8">
             You need to sign in to view your profile and orders.
           </p>
-          <button
+          <NoiseButton
             onClick={() => navigate('/sign-in')}
-            className="bg-black text-white px-8 py-4 rounded-full text-lg font-medium hover:bg-gray-800 transition-all"
+            containerClassName="w-fit"
           >
             Sign In Now
-          </button>
+          </NoiseButton>
         </div>
       </div>
     );
