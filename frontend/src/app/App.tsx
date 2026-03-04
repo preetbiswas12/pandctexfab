@@ -18,11 +18,7 @@ export default function App() {
       signUpFallbackRedirectUrl="https://auraclothings.qzz.io/"
       afterSignOutUrl="https://auraclothings.qzz.io/"
     >
-      <AdminProvider>
-        <AppProvider>
-          <RouterProvider router={router} />
-        </AppProvider>
-      </AdminProvider>
+      <RouterProvider router={router} />
     </ClerkProvider>
   );
 }
