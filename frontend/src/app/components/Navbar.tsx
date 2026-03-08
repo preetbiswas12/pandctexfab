@@ -52,9 +52,9 @@ export function Navbar({ }: NavbarProps) {
             to="/" 
             className="absolute left-1/2 -translate-x-1/2 flex items-center gap-2 md:gap-3" 
           >
-            <img src="/logo.png" alt="Aura Clothings" className="h-10 md:h-12 lg:h-14 w-auto rounded-full" />
+            <img src="/logo.png" alt="P&C Texfab" className="h-10 md:h-12 lg:h-14 w-auto rounded-full" />
             <span className="hidden sm:inline text-sm md:text-base lg:text-lg font-noto-serif font-bold text-gray-800">
-              Aura Clothings
+              P&C Texfab
             </span>
           </Link>
 

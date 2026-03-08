@@ -6,7 +6,7 @@ export default function AdminGuidelines() {
       {/* Header */}
       <div className="space-y-2">
         <h1 className="text-4xl font-bold tracking-tight mb-2">Admin Guidelines</h1>
-        <p className="text-lg opacity-70">Complete guidelines for moderators and administrators of Aura Clothings shop</p>
+        <p className="text-lg opacity-70">Complete guidelines for moderators and administrators of P&C Texfab shop</p>
       </div>
 
       {/* Important Notice */}
@@ -27,7 +27,7 @@ export default function AdminGuidelines() {
         <div className="space-y-3">
           <p><strong>Business Email:</strong> <code className="bg-gray-100 px-3 py-1 rounded">pandctexfab@gmail.com</code></p>
           <p><strong>Business Phone:</strong> <code className="bg-gray-100 px-3 py-1 rounded">+91 7044457914</code></p>
-          <p><strong>Business Address:</strong> Aura Clothings, India</p>
+          <p><strong>Business Address:</strong> P&C Texfab, India</p>
           <p className="text-sm opacity-70 mt-4">Use the business email for all customer communications and support inquiries.</p>
         </div>
       </section>

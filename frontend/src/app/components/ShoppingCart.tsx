@@ -77,7 +77,7 @@ export function ShoppingCart({ isOpen, onClose, items, onUpdateQuantity, onRemov
                     <p className="text-sm opacity-70 mb-2">₹{item.price}</p>
                     <div className="flex items-center gap-2">
                       <button
-                        onClick={() => onUpdateQuantity(item.id, Math.max(1, item.cartQuantity - 1))}
+                        onClick={() => onUpdateQuantity(item.id, Math.max(5, item.cartQuantity - 1))}
                         className="w-6 h-6 border rounded flex items-center justify-center hover:bg-gray-100 transition-all hover:scale-110 active:scale-95"
                       >
                         -

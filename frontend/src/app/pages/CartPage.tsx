@@ -80,7 +80,7 @@ export default function CartPage() {
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <button
-                          onClick={() => updateQuantity(item.id, Math.max(1, item.cartQuantity - 1))}
+                          onClick={() => updateQuantity(item.id, Math.max(5, item.cartQuantity - 1))}
                           className="w-8 h-8 border-2 border-black rounded-lg hover:bg-black hover:text-white transition-all"
                         >
                           -
@@ -114,7 +114,7 @@ export default function CartPage() {
                 <div className="space-y-3">
                   <div className="flex justify-between">
                     <span className="opacity-70">Subtotal</span>
-                    <span className="font-medium">${subtotal.toFixed(2)}</span>
+                    <span className="font-medium">₹{subtotal.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="opacity-70">Shipping</span>

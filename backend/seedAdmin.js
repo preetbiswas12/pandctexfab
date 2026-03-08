@@ -10,20 +10,20 @@ const seedAdmin = async () => {
     });
 
     // Check if admin already exists
-    const existingAdmin = await Admin.findOne({ email: 'dasparna75@gmail.com' });
+    const existingAdmin = await Admin.findOne({ email: 'pandctexfab@gmail.com' });
 
     if (existingAdmin) {
       // Optionally update password if different
       const updatePassword = process.argv.includes('--reset-password');
       if (updatePassword) {
-        existingAdmin.password = 'biditadas123@';
+        existingAdmin.password = 'naturelover1215';
         await existingAdmin.save();
       }
     } else {
       // Create new admin
       const newAdmin = new Admin({
-        email: 'dasparna75@gmail.com',
-        password: 'biditadas123@',
+        email: 'pandctexfab@gmail.com',
+        password: 'naturelover1215',
         name: 'Dasparna Admin',
         role: 'super-admin',
         permissions: [

@@ -20,7 +20,7 @@ export function Footer() {
       <div className="w-full px-4 md:px-8 lg:px-[60px] py-16 md:py-24">
         {/* Logo Section */}
         <div className="mb-12 pb-8 border-b border-white/10 flex justify-center">
-          <img src="/logo.png" alt="Aura Clothings" className="h-16 w-auto rounded-full shadow-lg" />
+          <img src="/logo.png" alt="P&C Texfab" className="h-16 w-auto rounded-full shadow-lg" />
         </div>
 
         {/* Newsletter Section */}
@@ -135,7 +135,7 @@ export function Footer() {
       <div className="border-t border-white/10 bg-black/80">
         <div className="w-full px-4 md:px-8 lg:px-[60px] py-6 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-gray-400 text-sm md:text-base">
-            © 2024 Aura Clothings. All rights reserved.
+            © 2024 P&C Texfab. All rights reserved.
           </p>
           <div className="flex gap-6">
             <a href="#security" className="text-gray-400 text-sm md:text-base hover:text-white transition-colors">
