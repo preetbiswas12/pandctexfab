@@ -13,7 +13,9 @@ const {
 
 /**
  * POST /api/shipping/calculate
- * Calculate shipping charges based on destination pincode and weight
+ * Calculate shipping charges based on destination pincode
+ * STRICT: Only returns cost for valid pincodes
+ * Minimum shipping: ₹70
  * 
  * Request body:
  * {
@@ -26,49 +28,56 @@ router.post('/calculate', async (req, res) => {
   try {
     const { destinationPincode, weight = 1, amount = 0 } = req.body;
 
-    // Validate pincode
+    // Validate pincode - STRICT
     if (!destinationPincode) {
       return res.status(400).json({
         success: false,
-        message: 'Destination pincode is required',
+        available: false,
+        message: 'Pincode is required',
       });
     }
 
     if (!validatePincode(destinationPincode)) {
       return res.status(400).json({
         success: false,
-        message: 'Invalid pincode format. Please enter a 6-digit pincode.',
+        available: false,
+        message: 'Invalid pincode format',
       });
     }
 
     // Get shipping cost
-    const shippingResult = await getShippingCost(destinationPincode, weight);
+    const shippingResult = await calculateShippingCharges(destinationPincode, weight, amount);
 
-    // Log the request
-    console.log(`[Shipping] Calculated for pincode ${destinationPincode}: ₹${shippingResult.cost}`);
-
-    return res.json({
-      success: shippingResult.available,
-      data: {
-        available: shippingResult.available,
-        destinationPincode,
-        weight,
-        shippingCost: shippingResult.cost || shippingResult.fallbackCost || 100,
-        courier: shippingResult.courier,
-        deliveryDays: shippingResult.deliveryDays,
-        message: shippingResult.message || shippingResult.error,
-        allOptions: shippingResult.allOptions || [],
-      },
-    });
+    // Only return cost if available
+    if (shippingResult.available && shippingResult.cost) {
+      console.log(`[Shipping] Pincode ${destinationPincode} → ₹${shippingResult.cost}`);
+      
+      return res.json({
+        success: true,
+        available: true,
+        cost: shippingResult.cost,
+        message: shippingResult.message,
+      });
+    } else {
+      // NOT serviceable or invalid
+      console.log(`[Shipping] Pincode ${destinationPincode} → Not available`);
+      
+      return res.json({
+        success: false,
+        available: false,
+        cost: null,
+        message: shippingResult.message || 'Shipping not available for this location',
+      });
+    }
   } catch (error) {
     console.error('[Shipping] Calculate error:', error.message);
     
     return res.status(500).json({
       success: false,
-      message: 'Failed to calculate shipping charges',
-      error: process.env.NODE_ENV === 'production' ? undefined : error.message,
-      // Return fallback shipping cost if calculation fails
-      fallbackCost: 100,
+      available: false,
+      cost: null,
+      message: 'Unable to calculate shipping',
+      // Do NOT expose error details in production
     });
   }
 });
