@@ -31,6 +31,7 @@ interface AppContextType {
   refreshCoupons: () => Promise<void>;
   refreshBanners: () => Promise<void>;
   refreshCategories: () => Promise<void>;
+  refreshAllData: () => Promise<void>; // Refresh all data at once
   
   // Order Management
   createOrder: (orderData: Omit<Order, '_id' | 'orderNumber' | 'createdAt' | 'updatedAt'>) => Promise<Order>;
@@ -73,9 +74,16 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   // Initialize database and seed data (load only on page load, not real-time)
   useEffect(() => {
+    // Clear any cached localStorage to ensure fresh MongoDB API data
+    localStorage.removeItem('products');
+    localStorage.removeItem('orders');
+    localStorage.removeItem('coupons');
+    localStorage.removeItem('banners');
+    localStorage.removeItem('categories');
+    
     seedDatabase();
     
-    // Load initial data
+    // Load initial data from MongoDB API
     const loadData = async () => {
       const loadedProducts = (await db.getAll<DBProduct>('products')).map(p => ({ ...p, id: p._id }));
       const loadedOrders = await db.getAll<Order>('orders');
@@ -183,6 +191,21 @@ export function AppProvider({ children }: { children: ReactNode }) {
       setCategories(data);
     } catch (error) {
       console.error('Error refreshing categories:', error);
+    }
+  };
+
+  const refreshAllData = async () => {
+    try {
+      await Promise.all([
+        refreshProducts(),
+        refreshOrders(),
+        refreshCoupons(),
+        refreshBanners(),
+        refreshCategories()
+      ]);
+      console.log('✓ All data refreshed successfully');
+    } catch (error) {
+      console.error('Error refreshing all data:', error);
     }
   };
 
@@ -340,6 +363,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         refreshCoupons,
         refreshBanners,
         refreshCategories,
+        refreshAllData,
         createOrder,
         updateOrderStatus,
         createProduct,
@@ -381,11 +405,12 @@ export function useApp() {
       coupons: [],
       banners: [],
       categories: [],
-      refreshProducts: () => {},
-      refreshOrders: () => {},
-      refreshCoupons: () => {},
-      refreshBanners: () => {},
-      refreshCategories: () => {},
+      refreshProducts: async () => {},
+      refreshOrders: async () => {},
+      refreshCoupons: async () => {},
+      refreshBanners: async () => {},
+      refreshCategories: async () => {},
+      refreshAllData: async () => {},
       createOrder: async () => ({ _id: '', orderNumber: '', customerName: '', customerEmail: '', customerPhone: '', shippingAddress: { street: '', city: '', state: '', zipCode: '', country: '' }, items: [], subtotal: 0, discount: 0, shipping: 0, total: 0, status: 'pending', paymentStatus: 'pending', createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() }),
       updateOrderStatus: async () => {},
       createProduct: async () => ({ _id: '', id: '', sku: '', name: '', price: 0, offerPercentage: 0, quantity: 0, category: '', subCategory: '', fabricType: '', careInstructions: '', description: '', images: [], colors: [], features: [], createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() }),
