@@ -1,9 +1,8 @@
-import { X } from 'lucide-react';
-import { useNavigate } from 'react-router';
+import { X, Trash2 } from 'lucide-react';
+import { Link } from 'react-router';
 import { CartItem } from '../types';
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
-import { NoiseButton } from '@/components/ui/noise-button';
 
 interface ShoppingCartProps {
   isOpen: boolean;
@@ -14,7 +13,6 @@ interface ShoppingCartProps {
 }
 
 export function ShoppingCart({ isOpen, onClose, items, onUpdateQuantity, onRemoveItem }: ShoppingCartProps) {
-  const navigate = useNavigate();
   const total = items.reduce((sum, item) => sum + item.price * item.cartQuantity, 0);
   const cartRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -66,18 +64,25 @@ export function ShoppingCart({ isOpen, onClose, items, onUpdateQuantity, onRemov
             <div className="space-y-4">
               {items.map((item) => (
                 <div key={item.id} className="flex gap-4 pb-4 border-b">
-                  <img src={item.image} alt={item.name} className="w-20 h-20 object-cover rounded-lg" />
+                  <img 
+                    src={item.images?.[0] || ''} 
+                    alt={item.name} 
+                    className="w-20 h-20 object-cover rounded-lg bg-gray-100"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%23ccc" width="100" height="100"/%3E%3Ctext x="50%" y="50%" text-anchor="middle" dominant-baseline="middle" fill="%23999" font-size="10"%3ENo Image%3C/text%3E%3C/svg%3E';
+                    }}
+                  />
                   <div className="flex-1">
                     <h3 className="font-medium mb-1">{item.name}</h3>
-                    <p className="text-sm opacity-70 mb-2">${item.price}</p>
+                    <p className="text-sm opacity-70 mb-2">₹{item.price}</p>
                     <div className="flex items-center gap-2">
                       <button
-                        onClick={() => onUpdateQuantity(item.id, Math.max(5, item.cartQuantity - 1))}
+                        onClick={() => onUpdateQuantity(item.id, Math.max(1, item.cartQuantity - 1))}
                         className="w-6 h-6 border rounded flex items-center justify-center hover:bg-gray-100 transition-all hover:scale-110 active:scale-95"
                       >
                         -
                       </button>
-                      <span className="w-8 text-center">{item.cartQuantity}m</span>
+                      <span className="w-8 text-center">{item.cartQuantity}</span>
                       <button
                         onClick={() => onUpdateQuantity(item.id, item.cartQuantity + 1)}
                         className="w-6 h-6 border rounded flex items-center justify-center hover:bg-gray-100 transition-all hover:scale-110 active:scale-95"
@@ -86,6 +91,13 @@ export function ShoppingCart({ isOpen, onClose, items, onUpdateQuantity, onRemov
                       </button>
                     </div>
                   </div>
+                  <button
+                    onClick={() => onRemoveItem(item.id)}
+                    className="flex-shrink-0 p-2 text-red-500 hover:bg-red-50 rounded-lg transition-all hover:scale-110 active:scale-95"
+                    title="Remove from cart"
+                  >
+                    <Trash2 size={18} />
+                  </button>
                 </div>
               ))}
             </div>
@@ -96,36 +108,22 @@ export function ShoppingCart({ isOpen, onClose, items, onUpdateQuantity, onRemov
           <div className="border-t p-6 space-y-4">
             <div className="flex items-center justify-between text-xl font-bold">
               <span>Total:</span>
-              <span>${total.toFixed(2)}</span>
+              <span>₹{total.toFixed(2)}</span>
             </div>
-            <NoiseButton
-              onClick={() => {
-                onClose();
-                navigate('/cart');
-              }}
-              containerClassName="w-fit"
-              gradientColors={[
-                'rgb(255, 120, 150)',
-                'rgb(100, 180, 255)',
-                'rgb(255, 180, 100)',
-              ]}
+            <Link 
+              to="/cart" 
+              onClick={onClose}
+              className="block w-full bg-black text-white py-3 rounded-full font-medium hover:bg-gray-800 transition-all hover:scale-105 active:scale-95 text-center"
             >
               View Cart
-            </NoiseButton>
-            <NoiseButton
-              onClick={() => {
-                onClose();
-                navigate('/checkout');
-              }}
-              containerClassName="w-fit"
-              gradientColors={[
-                'rgb(100, 200, 255)',
-                'rgb(255, 150, 100)',
-                'rgb(150, 255, 150)',
-              ]}
+            </Link>
+            <Link 
+              to="/checkout" 
+              onClick={onClose}
+              className="block w-full border-2 border-black py-3 rounded-full font-medium hover:bg-black hover:text-white transition-all text-center"
             >
               Checkout
-            </NoiseButton>
+            </Link>
           </div>
         )}
       </div>

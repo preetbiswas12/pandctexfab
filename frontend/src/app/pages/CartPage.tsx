@@ -17,6 +17,9 @@ export default function CartPage() {
   const total = subtotal + shipping + tax;
 
   useEffect(() => {
+    // Only animate if there are items
+    if (cartItems.length === 0) return;
+
     const ctx = gsap.context(() => {
       gsap.from('.cart-item', {
         x: -50,
@@ -45,21 +48,13 @@ export default function CartPage() {
 
       <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-[60px] py-8 md:py-12">
         {cartItems.length === 0 ? (
-          <div className="text-center py-20">
+          <div className="flex flex-col items-center justify-center text-center py-20 min-h-[400px]">
             <ShoppingBag size={80} className="mx-auto mb-6 opacity-20" />
             <h2 className="text-2xl mb-4">Your cart is empty</h2>
             <p className="text-lg opacity-70 mb-8">
               Add some fabrics to get started
             </p>
-            <NoiseButton 
-              onClick={() => navigate('/shop')}
-              containerClassName="mx-auto w-fit"
-              gradientColors={[
-                'rgb(255, 120, 150)',
-                'rgb(100, 180, 255)',
-                'rgb(255, 180, 100)',
-              ]}
-            >
+            <NoiseButton onClick={() => navigate('/shop')}>
               Start Shopping
             </NoiseButton>
           </div>

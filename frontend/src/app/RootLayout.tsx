@@ -1,17 +1,17 @@
 import { Outlet } from 'react-router';
-import ScrollToTop from './components/ScrollToTop';
 import { AdminProvider } from './context/AdminContext';
 import { AppProvider } from './context/AppContext';
+import ScrollToTop from './components/ScrollToTop';
 
 export default function RootLayout() {
   return (
-    <>
-      <ScrollToTop />
-      <AdminProvider>
-        <AppProvider>
+    <AdminProvider>
+      <AppProvider>
+        <>
+          <ScrollToTop />
           <Outlet />
-        </AppProvider>
-      </AdminProvider>
-    </>
+        </>
+      </AppProvider>
+    </AdminProvider>
   );
 }

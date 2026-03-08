@@ -54,7 +54,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <h3 className="font-semibold text-lg mb-1">Email</h3>
-                  <p className="text-gray-600">support@P&C Texfab.com</p>
+                  <p className="text-gray-600">pandctexfab@gmail.com</p>
                   <p className="text-sm text-gray-500">We'll respond within 24 hours</p>
                 </div>
               </div>
@@ -66,8 +66,8 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <h3 className="font-semibold text-lg mb-1">Phone</h3>
-                  <p className="text-gray-600">+91 (555) 123-4567</p>
-                  <p className="text-sm text-gray-500">Mon-Fri, 9 AM - 6 PM IST</p>
+                  <p className="text-gray-600">+91 9804915374</p>
+                  <p className="text-sm text-gray-500">Mon-Sun, 8 AM - 9 PM IST</p>
                 </div>
               </div>
 
@@ -78,7 +78,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <h3 className="font-semibold text-lg mb-1">Address</h3>
-                  <p className="text-gray-600">P&C Texfab</p>
+                  <p className="text-gray-600">Delhi</p>
                   <p className="text-gray-600">India</p>
                 </div>
               </div>

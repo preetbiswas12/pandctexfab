@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router';
-import { Package, Truck, CheckCircle, Clock, XCircle, ChevronRight, RotateCcw } from 'lucide-react';
+import { Package, Truck, CheckCircle, Clock, XCircle, ChevronRight } from 'lucide-react';
 import { useUser } from '@clerk/clerk-react';
 import { useApp } from '../context/AppContext';
 import { NoiseButton } from '@/components/ui/noise-button';
@@ -9,21 +9,9 @@ import { Order } from '../services/database';
 export default function MyOrdersPage() {
   const navigate = useNavigate();
   const { user, isLoaded } = useUser();
-  const { orders, refreshOrders } = useApp();
-  const [isRefreshing, setIsRefreshing] = useState(false);
+  const { orders } = useApp();
 
   const userEmail = user?.emailAddresses[0]?.emailAddress || '';
-
-  const handleRefresh = async () => {
-    setIsRefreshing(true);
-    try {
-      await refreshOrders();
-    } catch (error) {
-      console.error('Error refreshing orders:', error);
-    } finally {
-      setIsRefreshing(false);
-    }
-  };
 
   // Use useMemo to filter and sort orders without causing re-renders
   const myOrders = useMemo(() => {
@@ -93,12 +81,14 @@ export default function MyOrdersPage() {
             <p className="text-lg opacity-70 mb-8">
               You need to sign in to your account to view your order history and track shipments.
             </p>
-            <NoiseButton
-              onClick={() => navigate('/sign-in?redirect_url=/orders')}
-              containerClassName="w-fit"
-            >
-              Sign In Now
-            </NoiseButton>
+            <div className="flex justify-center">
+              <NoiseButton
+                onClick={() => navigate('/sign-in?redirect_url=/orders')}
+                containerClassName="w-fit"
+              >
+                Sign In Now
+              </NoiseButton>
+            </div>
           </div>
         </div>
       </div>
@@ -109,25 +99,8 @@ export default function MyOrdersPage() {
     <div className="min-h-screen bg-gray-50 py-8 md:py-16">
       <div className="max-w-6xl mx-auto px-4 md:px-8">
         <div className="mb-8">
-          <div className="flex items-center justify-between gap-4">
-            <div>
-              <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-2">My Orders</h1>
-              <p className="text-lg opacity-70">{userEmail}</p>
-            </div>
-            <NoiseButton
-              onClick={handleRefresh}
-              disabled={isRefreshing}
-              containerClassName="w-fit"
-              gradientColors={[
-                'rgb(100, 200, 255)',
-                'rgb(255, 150, 100)',
-                'rgb(150, 255, 150)',
-              ]}
-            >
-              <RotateCcw size={16} className={`inline mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
-              {isRefreshing ? 'Refreshing...' : 'Refresh'}
-            </NoiseButton>
-          </div>
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-2">My Orders</h1>
+          <p className="text-lg opacity-70">{userEmail}</p>
         </div>
 
         {myOrders.length === 0 ? (
@@ -137,12 +110,14 @@ export default function MyOrdersPage() {
             <p className="text-lg opacity-70 mb-8">
               You haven't placed any orders yet. Start shopping now!
             </p>
-            <NoiseButton
-              onClick={() => navigate('/shop')}
-              containerClassName="w-fit"
-            >
-              Start Shopping
-            </NoiseButton>
+            <div className="flex justify-center">
+              <NoiseButton
+                onClick={() => navigate('/shop')}
+                containerClassName="w-fit"
+              >
+                Start Shopping
+              </NoiseButton>
+            </div>
           </div>
         ) : (
           <div className="space-y-4">

@@ -4,7 +4,7 @@
 export const config = {
   // App
   app: {
-    name: import.meta.env.VITE_APP_NAME || 'Fabric Store',
+    name: import.meta.env.VITE_APP_NAME || 'Aura Clothings',
     url: import.meta.env.VITE_APP_URL || 'http://localhost:5173',
   },
 
@@ -39,6 +39,12 @@ export const config = {
     apiSecret: import.meta.env.VITE_CLOUDINARY_API_SECRET || '',
   },
 
+  // Google Services
+  google: {
+    clientId: import.meta.env.VITE_GOOGLE_CLIENT_ID || '',
+    apiKey: import.meta.env.VITE_GOOGLE_API_KEY || '',
+  },
+
   // Email
   email: {
     serviceApiKey: import.meta.env.VITE_EMAIL_SERVICE_API_KEY || '',
@@ -60,7 +66,7 @@ export const config = {
 
   // Business
   business: {
-    email: import.meta.env.VITE_BUSINESS_EMAIL || 'contact@fabricstore.com',
+    email: import.meta.env.VITE_BUSINESS_EMAIL || 'pandctexfab@gmail.com',
     phone: import.meta.env.VITE_BUSINESS_PHONE || '+91-9876543210',
     address: import.meta.env.VITE_BUSINESS_ADDRESS || '123 Fabric Street, Mumbai, India',
   },

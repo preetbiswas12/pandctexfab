@@ -4,7 +4,6 @@ import { useApp } from '../context/AppContext';
 import { Heart, ShoppingCart, Check } from 'lucide-react';
 import { gsap } from 'gsap';
 import { convertGoogleDriveLink } from '../../lib/googleDriveUtils';
-import { NoiseButton } from '@/components/ui/noise-button';
 
 export default function ProductDetailPage() {
   const { id } = useParams();
@@ -12,7 +11,7 @@ export default function ProductDetailPage() {
   const { products, addToCart, wishlist, toggleWishlist } = useApp();
   
   const [selectedImage, setSelectedImage] = useState(0);
-  const [quantity, setQuantity] = useState(5); // Minimum 5 meters
+  const [quantity, setQuantity] = useState(1); // Minimum 1
   const [addedToCart, setAddedToCart] = useState(false);
   const [showZoom, setShowZoom] = useState(false);
   const [zoomPosition, setZoomPosition] = useState({ x: 0, y: 0 });
@@ -204,28 +203,23 @@ export default function ProductDetailPage() {
 
             {/* Actions */}
             <div className="flex gap-4">
-              <NoiseButton
+              <button
                 onClick={handleAddToCart}
                 disabled={product.quantity === 0}
-                containerClassName="w-fit"
-                gradientColors={[
-                  'rgb(255, 120, 150)',
-                  'rgb(100, 180, 255)',
-                  'rgb(255, 180, 100)',
-                ]}
+                className="flex-1 bg-black text-white px-8 py-4 rounded-full font-medium hover:bg-gray-800 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {addedToCart ? (
                   <>
-                    <Check size={20} className="inline mr-2" />
+                    <Check size={20} />
                     Added to Cart
                   </>
                 ) : (
                   <>
-                    <ShoppingCart size={20} className="inline mr-2" />
+                    <ShoppingCart size={20} />
                     Add to Cart
                   </>
                 )}
-              </NoiseButton>
+              </button>
               <button
                 onClick={() => toggleWishlist(product._id)}
                 className={`w-14 h-14 rounded-full border-2 flex items-center justify-center transition-all ${

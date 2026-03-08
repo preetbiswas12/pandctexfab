@@ -1,8 +1,6 @@
 import { RouterProvider } from "react-router";
 import { ClerkProvider } from "@clerk/clerk-react";
 import { router } from "./routes";
-import { AppProvider } from "./context/AppContext";
-import { AdminProvider } from "./context/AdminContext";
 
 const clerkPubKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 

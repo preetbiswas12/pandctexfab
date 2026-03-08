@@ -179,8 +179,22 @@ export interface BackendPaymentOptions {
   onDismiss?: () => void;
 }
 
-// Backend API base URL
-export const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+// Backend API base URL - prioritize production HTTPS
+export const API_BASE_URL = (() => {
+  // If explicitly set to a custom value and not http:// localhost, use it
+  const envUrl = import.meta.env.VITE_API_URL;
+  if (envUrl && !envUrl.includes('localhost') && !envUrl.startsWith('http://')) {
+    return envUrl;
+  }
+  
+  // For localhost development
+  if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
+    return 'http://localhost:5000/api';
+  }
+  
+  // Default to production HTTPS
+  return 'https://pandctexfab.qzz.io/api';
+})();
 
 // Create order via backend and open Razorpay checkout
 export const initiateBackendRazorpayPayment = async (
@@ -189,7 +203,7 @@ export const initiateBackendRazorpayPayment = async (
   try {
     // Step 1: Create order on backend
     console.log('Creating order on backend...');
-    const createOrderResponse = await fetch(`${API_BASE_URL}/api/payments/create-order`, {
+    const createOrderResponse = await fetch(`${API_BASE_URL}/payments/create-order`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -300,7 +314,7 @@ export const verifyPaymentOnBackend = async (
 
     console.log('Verifying payment on backend...');
 
-    const verifyResponse = await fetch(`${API_BASE_URL}/api/payments/verify`, {
+    const verifyResponse = await fetch(`${API_BASE_URL}/payments/verify`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

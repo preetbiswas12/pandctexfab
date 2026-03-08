@@ -1,16 +1,16 @@
 import { useState } from 'react';
 import { Plus, Search, Edit, Trash2, X, Upload, Image as ImageIcon } from 'lucide-react';
-import { CATEGORIES } from '../../types';
 import { useApp } from '../../context/AppContext';
 import { convertGoogleDriveLink } from '../../../lib/googleDriveUtils';
-import { NoiseButton } from '@/components/ui/noise-button';
+import { GoogleDrivePicker } from '../../components/GoogleDrivePicker';
 
 export default function AdminProducts() {
-  const { products, createProduct, updateProduct, deleteProduct: deleteProductDB } = useApp();
+  const { products, categories, createProduct, updateProduct, deleteProduct: deleteProductDB } = useApp();
   const [searchTerm, setSearchTerm] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<typeof products[0] | null>(null);
   const [uploadingImages, setUploadingImages] = useState(false);
+  const [showGoogleDrivePicker, setShowGoogleDrivePicker] = useState(false);
   
   const [formData, setFormData] = useState({
     name: '',
@@ -131,6 +131,19 @@ export default function AdminProducts() {
     }
   };
 
+  // Handle Google Drive image selection
+  const handleGoogleDriveImages = (urls: string[]) => {
+    if (!urls || urls.length === 0) return;
+
+    // Add new images to existing ones
+    const currentImages = formData.images ? formData.images.split(',').map(img => img.trim()).filter(Boolean) : [];
+    const allImages = [...currentImages, ...urls];
+    setFormData(prev => ({ ...prev, images: allImages.join(', ') }));
+    
+    // Reset state
+    setShowGoogleDrivePicker(false);
+  };
+
   const openModal = (product?: typeof products[0]) => {
     if (product) {
       setEditingProduct(product);
@@ -199,7 +212,7 @@ export default function AdminProducts() {
     p.sku.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const selectedCategory = CATEGORIES.find(c => c.id === formData.category);
+  const selectedCategory = categories.find(c => c._id === formData.category);
 
   // Calculate discounted price
   const calculateDiscountedPrice = (price: number, offerPercentage: number) => {
@@ -218,18 +231,13 @@ export default function AdminProducts() {
           <h1 className="text-4xl font-bold tracking-tight mb-2">Products</h1>
           <p className="text-lg opacity-70">{products.length} total products</p>
         </div>
-        <NoiseButton
+        <button
           onClick={() => openModal()}
-          containerClassName="w-fit"
-          gradientColors={[
-            'rgb(255, 120, 150)',
-            'rgb(100, 180, 255)',
-            'rgb(255, 180, 100)',
-          ]}
+          className="bg-magenta-950 text-white px-6 py-3 rounded-full font-medium hover:bg-magenta-900 transition-all flex items-center gap-2"
         >
-          <Plus size={20} className="inline mr-2" />
+          <Plus size={20} />
           Add Product
-        </NoiseButton>
+        </button>
       </div>
 
       {/* Search */}
@@ -271,7 +279,7 @@ export default function AdminProducts() {
                 <div className="flex gap-2">
                   <button
                     onClick={() => openModal(product)}
-                    className="flex-1 border-2 border-black px-4 py-2 rounded-full font-medium hover:bg-black hover:text-white transition-all flex items-center justify-center gap-2"
+                    className="flex-1 border-2 border-magenta-950 px-4 py-2 rounded-full font-medium hover:bg-magenta-950 hover:text-white transition-all flex items-center justify-center gap-2"
                   >
                     <Edit size={16} />
                     Edit
@@ -292,7 +300,7 @@ export default function AdminProducts() {
       {/* Product Modal */}
       {isModalOpen && (
         <>
-          <div className="fixed inset-0 bg-black/50 z-[990]" onClick={closeModal} />
+          <div className="fixed inset-0 bg-magenta-950/50 z-[990]" onClick={closeModal} />
           <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-3xl p-8 w-full max-w-3xl max-h-[90vh] overflow-y-auto z-[999]">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-bold">
@@ -372,8 +380,8 @@ export default function AdminProducts() {
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
                   >
                     <option value="">Select Category</option>
-                    {CATEGORIES.map(cat => (
-                      <option key={cat.id} value={cat.id}>{cat.name}</option>
+                    {categories.filter(cat => cat.isActive).map(cat => (
+                      <option key={cat._id} value={cat._id}>{cat.name}</option>
                     ))}
                   </select>
                 </div>
@@ -389,7 +397,7 @@ export default function AdminProducts() {
                   >
                     <option value="">Select Sub Category</option>
                     {selectedCategory?.subCategories.map(sub => (
-                      <option key={sub.id} value={sub.id}>{sub.name}</option>
+                      <option key={sub.slug} value={sub.slug}>{sub.name}</option>
                     ))}
                   </select>
                 </div>
@@ -423,7 +431,7 @@ export default function AdminProducts() {
                   
                   {/* File Upload Button */}
                   <div className="mb-4">
-                    <label className="flex items-center justify-center gap-2 px-4 py-3 border-2 border-dashed border-gray-300 rounded-lg hover:border-black hover:bg-gray-50 cursor-pointer transition-all">
+                    <label className="flex items-center justify-center gap-2 px-4 py-3 border-2 border-dashed border-gray-300 rounded-lg hover:border-magenta-950 hover:bg-gray-50 cursor-pointer transition-all">
                       <Upload size={20} />
                       <span>{uploadingImages ? 'Processing...' : 'Upload Images'}</span>
                       <input
@@ -440,12 +448,35 @@ export default function AdminProducts() {
                     </p>
                   </div>
 
+                  {/* Google Drive Picker Button */}
+                  <div className="mb-4">
+                    <button
+                      type="button"
+                      onClick={() => setShowGoogleDrivePicker(!showGoogleDrivePicker)}
+                      className="w-full flex items-center justify-center gap-2 px-4 py-3 border-2 border-blue-300 border-dashed rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all font-medium text-blue-700"
+                    >
+                      <ImageIcon size={20} />
+                      {showGoogleDrivePicker ? 'Hide Google Drive' : 'Add from Google Drive'}
+                    </button>
+                  </div>
+
+                  {/* Google Drive Picker Component */}
+                  {showGoogleDrivePicker && (
+                    <div className="mb-4">
+                      <GoogleDrivePicker
+                        onSelect={handleGoogleDriveImages}
+                        multiple={true}
+                        disabled={uploadingImages}
+                      />
+                    </div>
+                  )}
+
                   {/* Image Previews */}
                   {getImagePreviews().length > 0 && (
                     <div className="grid grid-cols-3 gap-3 mb-3">
                       {getImagePreviews().map((img, index) => (
                         <div key={index} className="relative aspect-square rounded-lg overflow-hidden bg-gray-100 border-2 border-gray-200">
-                          <img src={img} alt={`Preview ${index + 1}`} className="w-full h-full object-cover" />
+                          <img src={convertGoogleDriveLink(img)} alt={`Preview ${index + 1}`} className="w-full h-full object-cover" />
                           <button
                             type="button"
                             onClick={() => {
@@ -470,7 +501,7 @@ export default function AdminProducts() {
                       value={formData.images}
                       onChange={(e) => setFormData(prev => ({ ...prev, images: e.target.value }))}
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-sm"
-                      placeholder="https://example.com/image1.jpg, https://example.com/image2.jpg"
+                      placeholder="https://example.com/image1.jpg, https://example.com/image2.jpg, or Google Drive links"
                     />
                   </div>
                 </div>
@@ -523,17 +554,13 @@ export default function AdminProducts() {
                 >
                   Cancel
                 </button>
-                <NoiseButton
+                <button
+                  type="submit"
                   disabled={uploadingImages}
-                  containerClassName="flex-1"
-                  gradientColors={[
-                    'rgb(100, 200, 255)',
-                    'rgb(255, 150, 100)',
-                    'rgb(150, 255, 150)',
-                  ]}
+                  className="flex-1 bg-magenta-950 text-white px-6 py-3 rounded-full font-medium hover:bg-magenta-900 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {editingProduct ? 'Update Product' : 'Add Product'}
-                </NoiseButton>
+                </button>
               </div>
             </form>
           </div>

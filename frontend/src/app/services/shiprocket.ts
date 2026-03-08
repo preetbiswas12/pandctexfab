@@ -3,8 +3,22 @@
 
 import { config } from '../config/env';
 
-// API base URL from environment
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+// API base URL from environment - prioritize production HTTPS
+const API_BASE_URL = (() => {
+  // If explicitly set to a custom value and not http:// localhost, use it
+  const envUrl = import.meta.env.VITE_API_URL;
+  if (envUrl && !envUrl.includes('localhost') && !envUrl.startsWith('http://')) {
+    return envUrl;
+  }
+  
+  // For localhost development
+  if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
+    return 'http://localhost:5000/api';
+  }
+  
+  // Default to production HTTPS
+  return 'https://pandctexfab.qzz.io/api';
+})();
 
 /**
  * Validate pincode format (6 digits for India)
@@ -82,16 +96,6 @@ export const calculateShippingCharge = async (
       };
     }
 
-    // Check if already retrieved recently (cache for 5 minutes)
-    const cacheKey = `shipping_${destinationPincode}_${weight}`;
-    const cached = sessionStorage.getItem(cacheKey);
-    if (cached) {
-      const cachedData = JSON.parse(cached);
-      if (Date.now() - cachedData.timestamp < 5 * 60 * 1000) {
-        return cachedData.data;
-      }
-    }
-
     // Call backend shipping API
     const response = await fetch(`${API_BASE_URL}/shipping/calculate`, {
       method: 'POST',
@@ -99,6 +103,7 @@ export const calculateShippingCharge = async (
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
+        fromPincode: '201304', // Warehouse pincode
         destinationPincode,
         weight,
         amount: subtotal,
@@ -120,15 +125,6 @@ export const calculateShippingCharge = async (
         deliveryDays: result.data.deliveryDays,
         message: result.data.message || `Shipping: ₹${result.data.shippingCost}`,
       };
-
-      // Cache the result
-      sessionStorage.setItem(
-        cacheKey,
-        JSON.stringify({
-          data: shippingData,
-          timestamp: Date.now(),
-        })
-      );
 
       return shippingData;
     } else {

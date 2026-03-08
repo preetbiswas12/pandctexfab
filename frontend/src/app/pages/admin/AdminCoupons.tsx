@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Plus, Edit, Trash2, X, Tag } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { Coupon } from '../../services/database';
-import { NoiseButton } from '@/components/ui/noise-button';
 
 export default function AdminCoupons() {
   const { coupons, createCoupon, updateCoupon, deleteCoupon: deleteCouponDB } = useApp();
@@ -102,18 +101,13 @@ export default function AdminCoupons() {
           <h1 className="text-4xl font-bold tracking-tight mb-2">Coupons</h1>
           <p className="text-lg opacity-70">{coupons.length} total coupons</p>
         </div>
-        <NoiseButton
+        <button
           onClick={() => openModal()}
-          containerClassName="w-fit"
-          gradientColors={[
-            'rgb(255, 120, 150)',
-            'rgb(100, 180, 255)',
-            'rgb(255, 180, 100)',
-          ]}
+          className="bg-magenta-950 text-white px-6 py-3 rounded-full font-medium hover:bg-magenta-900 transition-all flex items-center gap-2"
         >
-          <Plus size={20} className="inline mr-2" />
+          <Plus size={20} />
           Add Coupon
-        </NoiseButton>
+        </button>
       </div>
 
       {/* Coupons Grid */}
@@ -181,7 +175,7 @@ export default function AdminCoupons() {
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
                     <div 
-                      className="bg-black rounded-full h-2 transition-all"
+                      className="bg-magenta-950 rounded-full h-2 transition-all"
                       style={{ width: `${Math.min(usagePercentage, 100)}%` }}
                     />
                   </div>
@@ -202,7 +196,7 @@ export default function AdminCoupons() {
                 </button>
                 <button
                   onClick={() => openModal(coupon)}
-                  className="w-10 h-10 border-2 border-black rounded-full flex items-center justify-center hover:bg-black hover:text-white transition-all"
+                  className="w-10 h-10 border-2 border-magenta-950 rounded-full flex items-center justify-center hover:bg-magenta-950 hover:text-white transition-all"
                 >
                   <Edit size={16} />
                 </button>
@@ -221,7 +215,7 @@ export default function AdminCoupons() {
       {/* Coupon Modal */}
       {isModalOpen && (
         <>
-          <div className="fixed inset-0 bg-black/50 z-[990]" onClick={closeModal} />
+          <div className="fixed inset-0 bg-magenta-950/50 z-[990]" onClick={closeModal} />
           <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-3xl p-8 w-full max-w-2xl max-h-[90vh] overflow-y-auto z-[999]">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-bold">
@@ -357,16 +351,12 @@ export default function AdminCoupons() {
                 >
                   Cancel
                 </button>
-                <NoiseButton
-                  containerClassName="flex-1"
-                  gradientColors={[
-                    'rgb(100, 200, 255)',
-                    'rgb(255, 150, 100)',
-                    'rgb(150, 255, 150)',
-                  ]}
+                <button
+                  type="submit"
+                  className="flex-1 bg-magenta-950 text-white px-6 py-3 rounded-full font-medium hover:bg-magenta-900 transition-all"
                 >
                   {editingCoupon ? 'Update Coupon' : 'Add Coupon'}
-                </NoiseButton>
+                </button>
               </div>
             </form>
           </div>

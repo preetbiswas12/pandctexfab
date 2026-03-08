@@ -90,7 +90,7 @@ export const NoiseBackground = ({
     const centerY = rect.height / 2;
     x.set(centerX);
     y.set(centerY);
-  }, []);
+  }, [x, y]);
 
   // Generate random velocity
   const generateRandomVelocityRef = useRef(() => {

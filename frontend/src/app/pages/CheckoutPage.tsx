@@ -49,17 +49,31 @@ export default function CheckoutPage() {
     }
   }, [isLoaded, user]);
 
+  // Calculate totals and costs (must be before useEffect that uses them)
+  const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.cartQuantity, 0);
+  const shipping = subtotal >= config.shipping.freeThreshold ? 0 : shippingCost;
+  const discount = appliedCoupon ? appliedCoupon.discount : 0;
+  const tax = (subtotal - discount) * config.tax.rate;
+  const total = subtotal - discount + shipping + tax;
+
   // Calculate shipping when zipCode changes
   useEffect(() => {
     const calculateShipping = async () => {
       const zipCode = formData.zipCode?.trim();
       
-      // Skip if zipCode is empty or invalid format
-      if (!zipCode || !validatePincodeFormat(zipCode)) {
-        // Reset to default shipping
-        setShippingCost(config.shipping.standardCost);
-        setShippingMessage('');
-        setShippingAvailable(true);
+      // If no zipCode, clear shipping
+      if (!zipCode) {
+        setShippingCost(0);
+        setShippingMessage('Enter pincode to calculate shipping');
+        setShippingAvailable(false);
+        return;
+      }
+
+      // If invalid format, show error
+      if (!validatePincodeFormat(zipCode)) {
+        setShippingCost(0);
+        setShippingMessage('Invalid pincode format (6 digits required)');
+        setShippingAvailable(false);
         return;
       }
 
@@ -76,16 +90,16 @@ export default function CheckoutPage() {
           setShippingMessage(result.message);
           setShippingAvailable(true);
         } else {
-          // Use fallback shipping cost if not available
-          setShippingCost(config.shipping.standardCost);
-          setShippingMessage(result.message || 'Using standard shipping rate');
+          // Location not serviceable
+          setShippingCost(0);
+          setShippingMessage(result.message || 'Shipping not available in this area');
           setShippingAvailable(false);
         }
       } catch (error) {
         console.error('Shipping calculation error:', error);
-        setShippingCost(config.shipping.standardCost);
-        setShippingMessage('');
-        setShippingAvailable(true);
+        setShippingCost(0);
+        setShippingMessage('Unable to calculate shipping. Please try again.');
+        setShippingAvailable(false);
       } finally {
         setIsCalculatingShipping(false);
       }
@@ -94,13 +108,6 @@ export default function CheckoutPage() {
     const debounceTimer = setTimeout(calculateShipping, 1000); // Debounce by 1 second
     return () => clearTimeout(debounceTimer);
   }, [formData.zipCode, cartItems, subtotal]);
-
-  const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.cartQuantity, 0);
-  // Use dynamic shipping cost from state  
-  const shipping = subtotal >= config.shipping.freeThreshold ? 0 : shippingCost;
-  const discount = appliedCoupon ? appliedCoupon.discount : 0;
-  const tax = (subtotal - discount) * config.tax.rate;
-  const total = subtotal - discount + shipping + tax;
 
   const handleApplyCoupon = () => {
     setCouponError('');
@@ -429,16 +436,26 @@ export default function CheckoutPage() {
                           <Loader2 size={14} className="animate-spin" />
                           <span>Calculating shipping charges...</span>
                         </div>
-                      ) : formData.zipCode && validatePincodeFormat(formData.zipCode) ? (
-                        <div className={shippingAvailable ? 'text-green-600' : 'text-orange-600'}>
-                          {shippingMessage && <p>{shippingMessage}</p>}
-                          {subtotal >= config.shipping.freeThreshold ? (
-                            <p className="font-medium text-green-600">✓ Free Shipping Eligible</p>
-                          ) : (
-                            <p className="font-medium">Shipping Cost: ₹{shippingCost.toFixed(0)}</p>
+                      ) : (
+                        <>
+                          {!formData.zipCode && (
+                            <p className="text-gray-500">{shippingMessage}</p>
                           )}
-                        </div>
-                      ) : null}
+                          {formData.zipCode && !validatePincodeFormat(formData.zipCode) && (
+                            <p className="text-red-600">{shippingMessage}</p>
+                          )}
+                          {formData.zipCode && validatePincodeFormat(formData.zipCode) && (
+                            <div className={shippingAvailable ? 'text-green-600' : 'text-orange-600'}>
+                              {shippingMessage && <p>{shippingMessage}</p>}
+                              {subtotal >= config.shipping.freeThreshold ? (
+                                <p className="font-medium text-green-600">✓ Free Shipping Eligible</p>
+                              ) : (
+                                <p className="font-medium">Shipping Cost: ₹{shippingCost.toFixed(0)}</p>
+                              )}
+                            </div>
+                          )}
+                        </>
+                      )}
                     </div>
                   </div>
                   <div>
@@ -472,17 +489,13 @@ export default function CheckoutPage() {
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
                   />
                 </div>
-                <NoiseButton
+                <button
+                  type="button"
                   onClick={handleApplyCoupon}
-                  containerClassName="w-fit"
-                  gradientColors={[
-                    'rgb(255, 120, 150)',
-                    'rgb(100, 180, 255)',
-                    'rgb(255, 180, 100)',
-                  ]}
+                  className="w-full bg-black text-white px-8 py-4 rounded-full text-lg font-medium hover:bg-gray-800 transition-all"
                 >
                   Apply Coupon
-                </NoiseButton>
+                </button>
                 {couponError && <p className="text-red-500 text-sm">{couponError}</p>}
                 {appliedCoupon && (
                   <p className="text-green-500 text-sm">
@@ -492,14 +505,10 @@ export default function CheckoutPage() {
               </div>
             </div>
 
-            <NoiseButton
+            <button
+              type="submit"
               disabled={isProcessing}
-              containerClassName="w-fit"
-              gradientColors={[
-                'rgb(100, 200, 255)',
-                'rgb(255, 150, 100)',
-                'rgb(150, 255, 150)',
-              ]}
+              className="w-full bg-black text-white px-8 py-4 rounded-full text-lg font-medium hover:bg-gray-800 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               {isProcessing ? (
                 <>
@@ -509,7 +518,7 @@ export default function CheckoutPage() {
               ) : (
                 'Proceed to Payment'
               )}
-            </NoiseButton>
+            </button>
           </form>
         </div>
 
@@ -528,7 +537,7 @@ export default function CheckoutPage() {
                       <p className="font-medium">{item.name}</p>
                       <p className="text-sm opacity-70">Qty: {item.cartQuantity}</p>
                     </div>
-                    <p className="font-medium">${(item.price * item.cartQuantity).toFixed(2)}</p>
+                    <p className="font-medium">₹{(item.price * item.cartQuantity).toFixed(2)}</p>
                   </div>
                 ))}
               </div>

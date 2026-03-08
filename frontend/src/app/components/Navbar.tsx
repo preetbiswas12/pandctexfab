@@ -4,7 +4,6 @@ import { gsap } from 'gsap';
 import { Menu, X, Home, ShoppingBag, Heart, User, ShoppingCart, LogOut } from 'lucide-react';
 import { useUser, useClerk } from '@clerk/clerk-react';
 import { useApp } from '../context/AppContext';
-import { CATEGORIES } from '../types';
 import { motion, AnimatePresence } from 'motion/react';
 
 interface NavbarProps {
@@ -16,7 +15,7 @@ export function Navbar({ }: NavbarProps) {
   const navRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { cartItems, wishlist } = useApp();
+  const { cartItems, wishlist, categories } = useApp();
   const { user, isLoaded } = useUser();
   const { signOut } = useClerk();
 
@@ -51,10 +50,12 @@ export function Navbar({ }: NavbarProps) {
           {/* Logo - Centered absolutely */}
           <Link 
             to="/" 
-            className="absolute left-1/2 -translate-x-1/2 text-lg md:text-xl lg:text-2xl font-extrabold whitespace-nowrap" 
-            style={{ fontFamily: "'Century Gothic', 'CenturyGothic', 'Apple Gothic', sans-serif" }}
+            className="absolute left-1/2 -translate-x-1/2 flex items-center gap-2 md:gap-3" 
           >
-            P&C Texfab
+            <img src="/logo.png" alt="Aura Clothings" className="h-10 md:h-12 lg:h-14 w-auto rounded-full" />
+            <span className="hidden sm:inline text-sm md:text-base lg:text-lg font-noto-serif font-bold text-gray-800">
+              Aura Clothings
+            </span>
           </Link>
 
           {/* Right: Auth - Pushed far right */}
@@ -63,8 +64,8 @@ export function Navbar({ }: NavbarProps) {
             <div className="hidden md:flex items-center gap-4">
               {isLoaded && user ? (
                 <>
-                  <Link to="/profile" className="hover:opacity-70 transition-opacity flex items-center">
-                    <span className="text-xs md:text-sm font-semibold tracking-tight text-magenta-600 hover:text-magenta-700">{user.firstName || user.emailAddresses[0]?.emailAddress}</span>
+                  <Link to={`/${(user.firstName || '').toLowerCase()}/profile`} className="hover:opacity-70 transition-opacity flex items-center">
+                    <span className="text-xs md:text-sm font-semibold tracking-tight text-aura-600 hover:text-aura-700">{user.firstName || user.emailAddresses[0]?.emailAddress}</span>
                   </Link>
                   <button
                     onClick={async () => {
@@ -87,7 +88,7 @@ export function Navbar({ }: NavbarProps) {
             <div className="md:hidden flex items-center gap-3">
               {isLoaded && user ? (
                 <>
-                  <Link to="/profile" className="hover:opacity-70 transition-opacity flex items-center">
+                  <Link to={`/${(user.firstName || '').toLowerCase()}/profile`} className="hover:opacity-70 transition-opacity flex items-center">
                     <User size={20} className="text-gray-700" />
                   </Link>
                   <button
@@ -120,7 +121,7 @@ export function Navbar({ }: NavbarProps) {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsMenuOpen(false)}
-              className="fixed inset-0 bg-black/30 md:hidden z-40"
+              className="fixed inset-0 bg-magenta-950/30 md:hidden z-40\"
             />
 
             {/* Sidebar */}
@@ -162,10 +163,10 @@ export function Navbar({ }: NavbarProps) {
                   <span className="text-sm font-medium">Shop All</span>
                 </Link>
 
-                {CATEGORIES.map((category) => (
+                {categories.filter(cat => cat.isActive).map((category) => (
                   <Link
-                    key={category.id}
-                    to={`/shop/${category.id}`}
+                    key={category._id}
+                    to={`/shop/${category.slug}`}
                     onClick={() => setIsMenuOpen(false)}
                     className="flex items-center gap-3 p-3 pl-8 rounded-lg hover:bg-gray-100 text-gray-600 hover:text-gray-900 transition-colors"
                   >
@@ -185,7 +186,7 @@ export function Navbar({ }: NavbarProps) {
                 </Link>
 
                 <Link
-                  to="/profile"
+                  to={user ? `/${(user.firstName || '').toLowerCase()}/profile` : '/sign-in'}
                   onClick={() => setIsMenuOpen(false)}
                   className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700 hover:text-gray-900 transition-colors"
                 >

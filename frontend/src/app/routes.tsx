@@ -17,6 +17,7 @@ import AdminProducts from "./pages/admin/AdminProducts";
 import AdminCoupons from "./pages/admin/AdminCoupons";
 import AdminCategories from "./pages/admin/AdminCategories";
 import BannersPage from "./pages/admin/BannersPage";
+import AdminGuidelines from "./pages/admin/AdminGuidelines";
 import AdminLoginPage from "./pages/AdminLoginPage";
 import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
@@ -53,6 +54,7 @@ export const router = createBrowserRouter([
           { path: "order-confirmation/:orderId", Component: OrderConfirmationPage },
           { path: "orders", Component: MyOrdersPage },
           { path: "order/:orderId", Component: OrderDetailPage },
+          { path: ":username/profile", Component: ProfilePage },
           { path: "profile", Component: ProfilePage },
           { path: "sign-in", Component: SignInPage },
           { path: "sign-up", Component: SignUpPage },
@@ -81,7 +83,8 @@ export const router = createBrowserRouter([
               { path: "products", Component: AdminProducts },
               { path: "categories", Component: AdminCategories },
               { path: "coupons", Component: AdminCoupons },
-              { path: "banners", Component: BannersPage }
+              { path: "banners", Component: BannersPage },
+              { path: "guidelines", Component: AdminGuidelines }
             ]
           },
           { path: "*", Component: NotFoundPage },

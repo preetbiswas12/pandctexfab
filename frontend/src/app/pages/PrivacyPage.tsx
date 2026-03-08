@@ -75,7 +75,7 @@ export default function PrivacyPolicyPage() {
           </p>
           <div className="mt-4 bg-gray-50 p-6 rounded-lg border-2 border-gray-200">
             <p className="font-semibold">P&C Texfab</p>
-            <p>Email: support@P&C Texfab.com</p>
+            <p>Email: pandctexfab@gmail.com</p>
             <p>Phone: +91 (555) 123-4567</p>
             <p>P&C Texfab, India</p>
           </div>
