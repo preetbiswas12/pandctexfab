@@ -1,13 +1,16 @@
 import { useParams, useNavigate } from 'react-router';
 import { useState, useEffect, useRef } from 'react';
+import { useUser } from '@clerk/clerk-react';
 import { useApp } from '../context/AppContext';
 import { Heart, ShoppingCart, Check } from 'lucide-react';
 import { gsap } from 'gsap';
 import { convertGoogleDriveLink } from '../../lib/googleDriveUtils';
+import RatingComponent from '../components/RatingComponent';
 
 export default function ProductDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { user } = useUser();
   const { products, addToCart, wishlist, toggleWishlist } = useApp();
   
   const [selectedImage, setSelectedImage] = useState(0);
@@ -266,6 +269,18 @@ export default function ProductDetailPage() {
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Ratings Section */}
+        <div className="mt-16">
+          <h2 className="text-3xl font-semibold mb-8">Customer Reviews</h2>
+          <RatingComponent
+            productId={product._id}
+            productName={product.name}
+            userId={user?.emailAddresses[0]?.emailAddress || undefined}
+            userName={user?.firstName && user?.lastName ? `${user.firstName} ${user.lastName}` : user?.firstName || undefined}
+            userEmail={user?.emailAddresses[0]?.emailAddress || undefined}
+          />
         </div>
       </div>
     </div>
