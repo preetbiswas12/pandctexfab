@@ -62,9 +62,10 @@ export const checkServiceability = async (pincode: string): Promise<any> => {
 
 /**
  * Calculate shipping charge for checkout
- * @param {string} destinationPincode - User's pincode
- * @param {number} weight - Package weight in kg (default: 0.5)
- * @param {number} subtotal - Order subtotal for COD charges
+ * STRICT: Only returns shipping cost for valid pincodes
+ * @param {string} destinationPincode - User's pincode (must be 6 digits)
+ * @param {number} weight - Package weight in kg (unused)
+ * @param {number} subtotal - Order subtotal (unused)
  * @returns {Promise<Object>} - Shipping cost and details
  */
 export const calculateShippingCharge = async (
@@ -73,26 +74,25 @@ export const calculateShippingCharge = async (
   subtotal: number = 0
 ): Promise<{
   available: boolean;
-  cost: number;
-  courier?: string;
-  deliveryDays?: number;
+  cost: number | null;
   message: string;
 }> => {
   try {
-    // Validate pincode
-    if (!destinationPincode) {
+    // STRICT: Reject empty pincodes
+    if (!destinationPincode || !destinationPincode.trim()) {
       return {
         available: false,
-        cost: 0,
-        message: 'Please enter your pincode',
+        cost: null,
+        message: 'Enter pincode to calculate shipping',
       };
     }
 
+    // STRICT: Reject invalid format (must be exactly 6 digits)
     if (!validatePincodeFormat(destinationPincode)) {
       return {
         available: false,
-        cost: 0,
-        message: 'Invalid pincode format',
+        cost: null,
+        message: 'Invalid pincode format (6 digits required)',
       };
     }
 
@@ -103,7 +103,6 @@ export const calculateShippingCharge = async (
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        fromPincode: '201304', // Warehouse pincode
         destinationPincode,
         weight,
         amount: subtotal,
@@ -117,33 +116,28 @@ export const calculateShippingCharge = async (
     const result = await response.json();
 
     // Handle response
-    if (result.success && result.data.available) {
-      const shippingData = {
-        available: true,
-        cost: result.data.shippingCost,
-        courier: result.data.courier,
-        deliveryDays: result.data.deliveryDays,
-        message: result.data.message || `Shipping: ₹${result.data.shippingCost}`,
-      };
-
-      return shippingData;
-    } else {
-      // Location not serviceable
-      const fallbackCost = result.data.fallbackCost || 100;
+    if (result.success && result.available) {
       return {
-        available: true, // Still allow checkout with fallback cost
-        cost: fallbackCost,
-        message: result.data.message || 'Shipping not available in your area. Using standard rate.',
+        available: true,
+        cost: result.cost,
+        message: result.message || `Shipping: ₹${result.cost}`,
+      };
+    } else {
+      // NOT serviceable - don't show anything
+      return {
+        available: false,
+        cost: null,
+        message: result.message || 'Cannot calculate shipping for this location',
       };
     }
   } catch (error) {
-    console.error('Shipping calculation error:', error);
+    console.error('Shipping calculation error');
 
-    // Return fallback shipping cost if API fails
+    // On error, don't show any shipping cost
     return {
-      available: true,
-      cost: 100, // Default fallback cost
-      message: 'Using standard shipping rate',
+      available: false,
+      cost: null,
+      message: 'Unable to calculate shipping',
     };
   }
 };

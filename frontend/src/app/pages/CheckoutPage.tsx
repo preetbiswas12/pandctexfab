@@ -51,7 +51,7 @@ export default function CheckoutPage() {
 
   // Calculate totals and costs (must be before useEffect that uses them)
   const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.cartQuantity, 0);
-  const shipping = subtotal >= config.shipping.freeThreshold ? 0 : shippingCost;
+  const shipping = shippingCost;
   const discount = appliedCoupon ? appliedCoupon.discount : 0;
   const tax = (subtotal - discount) * config.tax.rate;
   const total = subtotal - discount + shipping + tax;
@@ -429,34 +429,23 @@ export default function CheckoutPage() {
                       placeholder="6-digit pincode"
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
                     />
-                    {/* Shipping Status */}
-                    <div className="mt-3 text-sm">
-                      {isCalculatingShipping ? (
-                        <div className="flex items-center gap-2 text-blue-600">
-                          <Loader2 size={14} className="animate-spin" />
-                          <span>Calculating shipping charges...</span>
-                        </div>
-                      ) : (
-                        <>
-                          {!formData.zipCode && (
-                            <p className="text-gray-500">{shippingMessage}</p>
-                          )}
-                          {formData.zipCode && !validatePincodeFormat(formData.zipCode) && (
-                            <p className="text-red-600">{shippingMessage}</p>
-                          )}
-                          {formData.zipCode && validatePincodeFormat(formData.zipCode) && (
-                            <div className={shippingAvailable ? 'text-green-600' : 'text-orange-600'}>
-                              {shippingMessage && <p>{shippingMessage}</p>}
-                              {subtotal >= config.shipping.freeThreshold ? (
-                                <p className="font-medium text-green-600">✓ Free Shipping Eligible</p>
-                              ) : (
-                                <p className="font-medium">Shipping Cost: ₹{shippingCost.toFixed(0)}</p>
-                              )}
-                            </div>
-                          )}
-                        </>
-                      )}
-                    </div>
+                    {/* Shipping Status - Only show after calculation */}
+                    {!isCalculatingShipping && (
+                      <div className="mt-3 text-sm">
+                        {!formData.zipCode && (
+                          <p className="text-gray-500">{shippingMessage}</p>
+                        )}
+                        {formData.zipCode && !validatePincodeFormat(formData.zipCode) && (
+                          <p className="text-red-600">{shippingMessage}</p>
+                        )}
+                        {formData.zipCode && validatePincodeFormat(formData.zipCode) && shippingAvailable && (
+                          <p className="text-green-600 font-medium">{shippingMessage}</p>
+                        )}
+                        {formData.zipCode && validatePincodeFormat(formData.zipCode) && !shippingAvailable && (
+                          <p className="text-red-600">{shippingMessage}</p>
+                        )}
+                      </div>
+                    )}
                   </div>
                   <div>
                     <label className="block text-sm font-medium mb-2">Country *</label>
@@ -547,18 +536,24 @@ export default function CheckoutPage() {
                   <span className="opacity-70">Subtotal</span>
                   <span className="font-medium">₹{subtotal.toFixed(2)}</span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="opacity-70">Shipping</span>
-                  <span className="font-medium">₹{shipping.toFixed(2)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="opacity-70">Discount</span>
-                  <span className="font-medium">-₹{discount.toFixed(2)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="opacity-70">Tax</span>
-                  <span className="font-medium">₹{tax.toFixed(2)}</span>
-                </div>
+                {shippingAvailable && shipping > 0 && (
+                  <div className="flex justify-between">
+                    <span className="opacity-70">Shipping</span>
+                    <span className="font-medium">₹{shipping.toFixed(2)}</span>
+                  </div>
+                )}
+                {discount > 0 && (
+                  <div className="flex justify-between">
+                    <span className="opacity-70">Discount</span>
+                    <span className="font-medium">-₹{discount.toFixed(2)}</span>
+                  </div>
+                )}
+                {tax > 0 && (
+                  <div className="flex justify-between">
+                    <span className="opacity-70">Tax</span>
+                    <span className="font-medium">₹{tax.toFixed(2)}</span>
+                  </div>
+                )}
                 <div className="border-t pt-3 flex justify-between text-xl font-bold">
                   <span>Total</span>
                   <span>₹{total.toFixed(2)}</span>
