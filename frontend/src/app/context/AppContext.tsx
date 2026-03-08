@@ -14,7 +14,7 @@ interface AppContextType {
   // Cart & Wishlist
   cartItems: CartItem[];
   wishlist: string[];
-  addToCart: (product: Product) => void;
+  addToCart: (product: Product, quantity?: number) => void;
   updateQuantity: (productId: string, quantity: number) => void;
   removeFromCart: (productId: string) => void;
   toggleWishlist: (productId: string) => void;
@@ -95,19 +95,21 @@ export function AppProvider({ children }: { children: ReactNode }) {
   }, []);
 
   // Cart Management
-  const addToCart = (product: Product) => {
+  const addToCart = (product: Product, quantity?: number) => {
+    const quantityToAdd = Math.max(5, Math.min(quantity || 5, 100)); // Enforce 5-100 range
+    
     setCartItems((prev) => {
       const existingItem = prev.find((item) => item.id === product.id);
       if (existingItem) {
-        // Add 5 meters to existing item
+        // Update existing item with specified quantity
         return prev.map((item) =>
           item.id === product.id
-            ? { ...item, cartQuantity: Math.min(item.cartQuantity + 5, 100) } // Max 100 meters
+            ? { ...item, cartQuantity: Math.min(item.cartQuantity + quantityToAdd, 100) }
             : item
         );
       }
-      // Start with minimum 5 meters
-      return [...prev, { ...product, cartQuantity: 5 }];
+      // Add new item with specified quantity
+      return [...prev, { ...product, cartQuantity: quantityToAdd }];
     });
   };
 

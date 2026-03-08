@@ -60,9 +60,7 @@ export default function ProductDetailPage() {
   const discountedPrice = product.price - (product.price * product.offerPercentage / 100);
 
   const handleAddToCart = () => {
-    for (let i = 0; i < quantity; i++) {
-      addToCart(product);
-    }
+    addToCart(product, quantity);
     setAddedToCart(true);
     setTimeout(() => setAddedToCart(false), 2000);
   };
