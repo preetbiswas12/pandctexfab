@@ -536,28 +536,41 @@ export default function CheckoutPage() {
                   <span className="opacity-70">Subtotal</span>
                   <span className="font-medium">₹{subtotal.toFixed(2)}</span>
                 </div>
-                {shippingAvailable && shipping > 0 && (
-                  <div className="flex justify-between">
-                    <span className="opacity-70">Shipping</span>
-                    <span className="font-medium">₹{shipping.toFixed(2)}</span>
+                
+                {/* Show charges only if valid pincode is provided */}
+                {formData.zipCode && validatePincodeFormat(formData.zipCode) && (
+                  <>
+                    {shippingAvailable && shipping > 0 && (
+                      <div className="flex justify-between">
+                        <span className="opacity-70">Shipping</span>
+                        <span className="font-medium">₹{shipping.toFixed(2)}</span>
+                      </div>
+                    )}
+                    {discount > 0 && (
+                      <div className="flex justify-between">
+                        <span className="opacity-70">Discount</span>
+                        <span className="font-medium">-₹{discount.toFixed(2)}</span>
+                      </div>
+                    )}
+                    {tax > 0 && (
+                      <div className="flex justify-between">
+                        <span className="opacity-70">Tax</span>
+                        <span className="font-medium">₹{tax.toFixed(2)}</span>
+                      </div>
+                    )}
+                    <div className="border-t pt-3 flex justify-between text-xl font-bold">
+                      <span>Total</span>
+                      <span>₹{total.toFixed(2)}</span>
+                    </div>
+                  </>
+                )}
+                
+                {/* If no valid pincode, show message */}
+                {(!formData.zipCode || !validatePincodeFormat(formData.zipCode)) && (
+                  <div className="pt-3 text-sm text-gray-500 text-center">
+                    Enter a valid pincode to see shipping & taxes
                   </div>
                 )}
-                {discount > 0 && (
-                  <div className="flex justify-between">
-                    <span className="opacity-70">Discount</span>
-                    <span className="font-medium">-₹{discount.toFixed(2)}</span>
-                  </div>
-                )}
-                {tax > 0 && (
-                  <div className="flex justify-between">
-                    <span className="opacity-70">Tax</span>
-                    <span className="font-medium">₹{tax.toFixed(2)}</span>
-                  </div>
-                )}
-                <div className="border-t pt-3 flex justify-between text-xl font-bold">
-                  <span>Total</span>
-                  <span>₹{total.toFixed(2)}</span>
-                </div>
               </div>
             </div>
           </div>

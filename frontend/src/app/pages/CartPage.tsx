@@ -12,9 +12,6 @@ export default function CartPage() {
   const pageRef = useRef<HTMLDivElement>(null);
 
   const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.cartQuantity, 0);
-  const shipping = subtotal >= config.shipping.freeThreshold ? 0 : config.shipping.standardCost;
-  const tax = subtotal * config.tax.rate;
-  const total = subtotal + shipping + tax;
 
   useEffect(() => {
     // Only animate if there are items
@@ -112,22 +109,11 @@ export default function CartPage() {
                 <h2 className="text-2xl font-semibold">Order Summary</h2>
                 
                 <div className="space-y-3">
-                  <div className="flex justify-between">
+                  <div className="flex justify-between text-lg">
                     <span className="opacity-70">Subtotal</span>
-                    <span className="font-medium">₹{subtotal.toFixed(2)}</span>
+                    <span className="font-bold">₹{subtotal.toFixed(2)}</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="opacity-70">Shipping</span>
-                    <span className="font-medium">₹{shipping.toFixed(2)}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="opacity-70">Tax</span>
-                    <span className="font-medium">₹{tax.toFixed(2)}</span>
-                  </div>
-                  <div className="border-t pt-3 flex justify-between text-xl font-bold">
-                    <span>Total</span>
-                    <span>₹{total.toFixed(2)}</span>
-                  </div>
+                  <p className="text-sm text-gray-500">Shipping & taxes will be calculated at checkout</p>
                 </div>
 
                 <NoiseButton 
