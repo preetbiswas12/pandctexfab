@@ -25,7 +25,7 @@ export default function AdminDashboard() {
     <div className="min-h-screen bg-gray-50">
       <div className="flex">
         {/* Sidebar */}
-        <aside className="w-64 bg-magenta-950 text-white min-h-screen flex flex-col">
+        <aside className="w-64 bg-black text-white min-h-screen flex flex-col">
           <div className="p-6 border-b border-gray-800">
             <h2 className="text-2xl font-bold">Admin Panel</h2>
           </div>
@@ -40,7 +40,7 @@ export default function AdminDashboard() {
                     <button
                       onClick={() => navigate(item.path)}
                       className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
-                        isActive ? 'bg-white text-magenta-950' : 'hover:bg-magenta-900'
+                        isActive ? 'bg-gray-800 text-white' : 'hover:bg-gray-900 text-gray-300'
                       }`}
                     >
                       <Icon size={20} />
@@ -55,24 +55,24 @@ export default function AdminDashboard() {
           {/* Admin Info and Logout */}
           <div className="p-4 border-t border-gray-800 space-y-4">
             {admin && (
-              <div className="bg-magenta-900 rounded-lg p-3 text-sm">
+              <div className="bg-gray-900 rounded-lg p-3 text-sm border border-gray-800">
                 <div className="flex items-center gap-2 mb-2">
-                  <User size={16} />
-                  <span className="font-medium">Admin</span>
+                  <User size={16} className="text-white" />
+                  <span className="font-medium text-white">Admin</span>
                 </div>
-                <p className="text-gray-300 text-xs truncate">{admin.email}</p>
+                <p className="text-gray-400 text-xs truncate">{admin.email}</p>
               </div>
             )}
             <button
               onClick={handleLogout}
-              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-red-600 transition-all text-red-400 hover:text-white"
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-red-900 transition-all text-red-400 hover:text-white"
             >
               <LogOut size={20} />
               <span className="font-medium">Logout</span>
             </button>
             <button
               onClick={() => navigate('/')}
-              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-800 transition-all"
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-900 transition-all text-gray-300 hover:text-white"
             >
               <span className="text-sm font-medium">Back to Store</span>
             </button>
