@@ -1,6 +1,13 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+let compression;
+try {
+  compression = require('compression');
+} catch {
+  // compression middleware is optional - return a no-op middleware function
+  compression = () => (req, res, next) => next();
+}
 const path = require('path');
 require('dotenv').config();
 
@@ -9,13 +16,48 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(cors());
+app.use(compression()); // ⚠️ OPTIMIZED: Enable gzip compression for faster responses
 app.use(express.json());
+
+// Cache-busting headers for production
+// HTML files: never cache - users always see fresh content
+app.use((req, res, next) => {
+  if (req.path.endsWith('.html') || req.path === '/') {
+    res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.set('Pragma', 'no-cache');
+    res.set('Expires', '0');
+  }
+  next();
+});
+
+// JS/CSS/Image files: cache for 1 year (safe because Vite adds version hashes)
+app.use((req, res, next) => {
+  if (req.path.match(/\.(js|css|png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)$/)) {
+    res.set('Cache-Control', 'public, max-age=31536000, immutable');
+  }
+  next();
+});
 
 // Serve static files from the frontend build directory
 const staticFilePath = path.join(__dirname, '../frontend/dist');
 app.use(express.static(staticFilePath));
 
-// API Routes
+// Health check endpoints - BEFORE DB middleware so they always work
+app.get('/health', (req, res) => {
+  const dbStatus = mongoose.connection.readyState === 1 ? 'connected' : 'disconnected';
+  const isHealthy = mongoose.connection.readyState === 1;
+  res.status(isHealthy ? 200 : 503).json({ 
+    status: 'ok', 
+    database: dbStatus,
+    timestamp: new Date().toISOString()
+  });
+});
+
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'Fabric Store API is running...' });
+});
+
+// Database connection check middleware (after health checks)
 app.use((req, res, next) => {
   if (mongoose.connection.readyState !== 1) {
     return res.status(503).json({ success: false, message: 'Database not connected' });

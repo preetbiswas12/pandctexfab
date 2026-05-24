@@ -24,7 +24,7 @@ const seedAdmin = async () => {
       const newAdmin = new Admin({
         email: 'pandctexfab@gmail.com',
         password: 'naturelover1215',
-        name: 'Dasparna Admin',
+        name: 'Admin',
         role: 'super-admin',
         permissions: [
           'view-dashboard',
